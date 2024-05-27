@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDao {
+public class EmployeeDao implements AutoCloseable {
 
     private static String GET_ALL = "SELECT * FROM `employee`";
     private static String GET_BY_ID = "SELECT * FROM `employee` WHERE employee_id=?";
@@ -130,5 +130,14 @@ public class EmployeeDao {
                 .setBirthDate(resultSet.getTimestamp(BIRTH_DATE).toLocalDateTime())
                 .setPassword(resultSet.getString(PASSWORD))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 }

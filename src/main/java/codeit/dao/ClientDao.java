@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientDao {
+public class ClientDao implements AutoCloseable {
 
     private static String GET_ALL = "SELECT * FROM `client`";
     private static String GET_BY_ID = "SELECT * FROM `client` WHERE client_id=?";
@@ -118,5 +118,14 @@ public class ClientDao {
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setPassword(resultSet.getString(PASSWORD))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 }

@@ -5,12 +5,14 @@ import codeit.models.entities.Employee;
 import codeit.models.entities.Order;
 import codeit.models.entities.Project;
 import codeit.models.enums.ProjectStatus;
+import codeit.services.EmployeeService;
+import codeit.services.OrderService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDao {
+public class ProjectDao implements AutoCloseable {
 
     private static String GET_ALL = "SELECT * FROM `project`";
     private static String GET_BY_ID = "SELECT * FROM `project` WHERE project_id=?";
@@ -116,8 +118,8 @@ public class ProjectDao {
     private static Project extractProjectFromResultSet(ResultSet resultSet) throws SQLException {
         return new Project.Builder()
                 .setId(resultSet.getString(ID))
-                .setOrder(new Order.Builder().setId(resultSet.getString(ORDER_ID)).build())
-                .setManager(new Employee.Builder().setId(resultSet.getString(MANAGER_ID)).build())
+                .setOrder(OrderService.getInstance().getOrderById(resultSet.getString(ORDER_ID)))
+                .setManager(EmployeeService.getInstance().getEmployeeById(resultSet.getString(MANAGER_ID)))
                 .setName(resultSet.getString(NAME))
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setGitHubLink(resultSet.getString(PROJECT_LINK))
@@ -127,5 +129,14 @@ public class ProjectDao {
                 .setEndDate(resultSet.getTimestamp(END_DATE).toLocalDateTime())
                 .setStatus(ProjectStatus.getStatus(resultSet.getString(STATUS)))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 }

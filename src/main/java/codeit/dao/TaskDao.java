@@ -5,12 +5,14 @@ import codeit.models.entities.Employee;
 import codeit.models.entities.Project;
 import codeit.models.entities.Task;
 import codeit.models.enums.TaskStatus;
+import codeit.services.EmployeeService;
+import codeit.services.ProjectService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskDao {
+public class TaskDao implements AutoCloseable {
 
     private static String GET_ALL = "SELECT * FROM `task`";
     private static String GET_BY_ID = "SELECT * FROM `task` WHERE task_id=?";
@@ -120,9 +122,9 @@ public class TaskDao {
     private static Task extractTaskFromResultSet(ResultSet resultSet) throws SQLException {
         return new Task.Builder()
                 .setId(resultSet.getString(ID))
-                .setProject(new Project.Builder().setId(resultSet.getString(PROJECT_ID)).build())
-                .setDeveloper(new Employee.Builder().setId(resultSet.getString(DEVELOPER_ID)).build())
-                .setTester(new Employee.Builder().setId(resultSet.getString(TESTER_ID)).build())
+                .setProject(ProjectService.getInstance().getProjectById(resultSet.getString(PROJECT_ID)))
+                .setDeveloper(EmployeeService.getInstance().getEmployeeById(resultSet.getString(DEVELOPER_ID)))
+                .setTester(EmployeeService.getInstance().getEmployeeById(resultSet.getString(TESTER_ID)))
                 .setName(resultSet.getString(NAME))
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setBranchLink(resultSet.getString(TASK_LINK))
@@ -132,5 +134,14 @@ public class TaskDao {
                 .setStatus(TaskStatus.getStatus(resultSet.getString(STATUS)))
                 .setComment(resultSet.getString(COMMENT))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 }

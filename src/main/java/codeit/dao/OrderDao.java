@@ -4,12 +4,13 @@ import codeit.exceptions.ServerException;
 import codeit.models.entities.Client;
 import codeit.models.entities.Order;
 import codeit.models.enums.OrderStatus;
+import codeit.services.ClientService;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDao {
+public class OrderDao implements AutoCloseable {
 
     private static String GET_ALL = "SELECT * FROM `order`";
     private static String GET_BY_ID = "SELECT * FROM `order` WHERE order_id=?";
@@ -107,7 +108,7 @@ public class OrderDao {
     private static Order extractOrderFromResultSet(ResultSet resultSet) throws SQLException {
         return new Order.Builder()
                 .setId(resultSet.getString(ID))
-                .setClient(new Client.Builder().setId(resultSet.getString(CLIENT_ID)).build())
+                .setClient(ClientService.getInstance().getClientById(resultSet.getString(CLIENT_ID)))
                 .setName(resultSet.getString(NAME))
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setCreationDate(resultSet.getTimestamp(CREATION_DATE).toLocalDateTime())
@@ -115,5 +116,14 @@ public class OrderDao {
                 .setCost(resultSet.getBigDecimal(COST))
                 .setStatus(OrderStatus.getStatus(resultSet.getString(STATUS)))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 }
