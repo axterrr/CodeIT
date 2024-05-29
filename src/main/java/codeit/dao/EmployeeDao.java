@@ -21,6 +21,7 @@ public class EmployeeDao implements AutoCloseable {
             "SET first_name=?, last_name=?, specialisation=?, salary=?, email=?, phone_number=?, address=?, birth_date=?, password=? " +
             "WHERE employee_id=?";
     private static String DELETE = "DELETE FROM `employee` WHERE employee_id=?";
+    private static String GET_BY_CREDENTIALS = "SELECT * FROM `employee` WHERE email=? AND password=?";
 
     private static String ID = "employee_id";
     private static String FIRST_NAME = "first_name";
@@ -113,6 +114,21 @@ public class EmployeeDao implements AutoCloseable {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public Employee getByCredentials(String email, String password) {
+        Employee employee = null;
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_CREDENTIALS)) {
+            query.setString(1, email);
+            query.setString(2, password);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                employee = extractEmployeeFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employee;
     }
 
     private static Employee extractEmployeeFromResultSet(ResultSet resultSet) throws SQLException {

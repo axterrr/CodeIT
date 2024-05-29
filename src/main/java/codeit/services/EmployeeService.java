@@ -2,9 +2,11 @@ package codeit.services;
 
 import codeit.dao.EmployeeDao;
 import codeit.dao.DaoFactory;
+import codeit.dto.CredentialsDto;
 import codeit.models.entities.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EmployeeService {
     private static final EmployeeService INSTANCE = new EmployeeService(DaoFactory.getDaoFactory());
@@ -43,6 +45,12 @@ public class EmployeeService {
     public void deleteEmployee(String employeeId) {
         try (EmployeeDao dao = daoFactory.createEmployeeDao()) {
             dao.delete(employeeId);
+        }
+    }
+
+    public Employee getEmployeeByCredentials(CredentialsDto credentials) {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getByCredentials(credentials.getEmail(), credentials.getPassword());
         }
     }
 }

@@ -2,9 +2,11 @@ package codeit.services;
 
 import codeit.dao.ClientDao;
 import codeit.dao.DaoFactory;
+import codeit.dto.CredentialsDto;
 import codeit.models.entities.Client;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ClientService {
 
@@ -44,6 +46,12 @@ public class ClientService {
     public void deleteClient(String clientId) {
         try (ClientDao dao = daoFactory.createClientDao()) {
             dao.delete(clientId);
+        }
+    }
+
+    public Client getClientByCredentials(CredentialsDto credentials) {
+        try (ClientDao clientDao = daoFactory.createClientDao()) {
+            return clientDao.getByCredentials(credentials.getEmail(), credentials.getPassword());
         }
     }
 }
