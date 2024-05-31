@@ -19,4 +19,13 @@ public class Attribute {
     public static final String ADDRESS = "address";
     public static final String DESCRIPTION = "description";
     public static final String CONFIRM_PASSWORD = "confirmPassword";
+    public static final String EMPLOYEES = "employees";
+    public static final String EMPLOYEE_ID = "employeeId";
+    public static final String EMPLOYEE_DTO = "employeeDto";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String ROLE = "role";
+    public static final String SPECIALISATION = "specialisation";
+    public static final String SALARY = "salary";
+    public static final String BIRTH_DATE = "birthDate";
 }
