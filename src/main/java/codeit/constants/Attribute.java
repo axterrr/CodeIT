@@ -34,4 +34,11 @@ public class Attribute {
     public static final String DUE_DATE = "dueDate";
     public static final String COST = "cost";
     public static final String STATUS = "status";
+    public static final String PROJECTS = "projects";
+    public static final String PROJECT_ID = "projectId";
+    public static final String PROJECT_DTO = "projectDto";
+    public static final String MANAGER_ID = "managerId";
+    public static final String PROJECT_LINK = "projectLink";
+    public static final String BUDGET = "budget";
+    public static final String END_DATE = "endDate";
 }
