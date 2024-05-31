@@ -41,4 +41,11 @@ public class Attribute {
     public static final String PROJECT_LINK = "projectLink";
     public static final String BUDGET = "budget";
     public static final String END_DATE = "endDate";
+    public static final String TASKS = "tasks";
+    public static final String TASK_ID = "taskId";
+    public static final String TASK_DTO = "taskDto";
+    public static final String DEVELOPER_ID = "developerId";
+    public static final String TESTER_ID = "testerId";
+    public static final String BRANCH_LINK = "branchLink";
+    public static final String COMMENT = "comment";
 }
