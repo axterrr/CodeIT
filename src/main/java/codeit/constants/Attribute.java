@@ -28,4 +28,10 @@ public class Attribute {
     public static final String SPECIALISATION = "specialisation";
     public static final String SALARY = "salary";
     public static final String BIRTH_DATE = "birthDate";
+    public static final String ORDERS = "orders";
+    public static final String ORDER_ID = "orderId";
+    public static final String ORDER_DTO = "orderDto";
+    public static final String DUE_DATE = "dueDate";
+    public static final String COST = "cost";
+    public static final String STATUS = "status";
 }
