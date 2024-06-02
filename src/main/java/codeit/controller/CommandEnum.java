@@ -1,13 +1,56 @@
 package codeit.controller;
 
-import codeit.controller.commands.Command;
-import codeit.controller.commands.HomeCommand;
-import codeit.controller.commands.PageNotFoundCommand;
+import codeit.controller.commands.*;
+import codeit.controller.commands.auth.*;
+import codeit.controller.commands.client.*;
+import codeit.controller.commands.employee.*;
+import codeit.controller.commands.order.*;
+import codeit.controller.commands.project.*;
+import codeit.controller.commands.task.*;
 
 public enum CommandEnum {
 
     HOME ("GET:/", new HomeCommand()),
-    PAGE_NOT_FOUND ("GET:/pageNotFound", new PageNotFoundCommand());
+    PAGE_NOT_FOUND ("GET:/pageNotFound", new PageNotFoundCommand()),
+
+    GET_LOGIN ("GET:/login", new GetLoginCommand()),
+    LOGOUT ("GET:/logout", new LogoutCommand()),
+    POST_LOGIN ("POST:/login", new PostLoginCommand()),
+
+    ALL_CLIENTS ("GET:/clients", new AllClientsCommand()),
+    GET_ADD_CLIENT ("GET:/clients/add", new GetAddClientCommand()),
+    POST_ADD_CLIENT ("POST:/clients/add", new PostAddClientCommand()),
+    GET_UPDATE_CLIENT ("GET:/clients/update", new GetUpdateClientCommand()),
+    POST_UPDATE_CLIENT ("POST:/clients/update", new PostUpdateClientCommand()),
+    DELETE_CLIENT ("GET:/clients/delete", new DeleteClientCommand()),
+
+    ALL_EMPLOYEES ("GET:/employees", new AllEmployeesCommand()),
+    GET_ADD_EMPLOYEE ("GET:/employees/add", new GetAddEmployeeCommand()),
+    POST_ADD_EMPLOYEE ("POST:/employees/add", new PostAddEmployeeCommand()),
+    GET_UPDATE_EMPLOYEE ("GET:/employees/update", new GetUpdateEmployeeCommand()),
+    POST_UPDATE_EMPLOYEE ("POST:/employees/update", new PostUpdateEmployeeCommand()),
+    DELETE_EMPLOYEE ("GET:/employees/delete", new DeleteEmployeeCommand()),
+
+    ALL_ORDERS ("GET:/orders", new AllOrdersCommand()),
+    GET_ADD_ORDER ("GET:/orders/add", new GetAddOrderCommand()),
+    POST_ADD_ORDER ("POST:/orders/add", new PostAddOrderCommand()),
+    GET_UPDATE_ORDER ("GET:/orders/update", new GetUpdateOrderCommand()),
+    POST_UPDATE_ORDER ("POST:/orders/update", new PostUpdateOrderCommand()),
+    DELETE_ORDER ("GET:/orders/delete", new DeleteOrderCommand()),
+
+    ALL_PROJECTS ("GET:/projects", new AllProjectsCommand()),
+    GET_ADD_PROJECT ("GET:/projects/add", new GetAddProjectCommand()),
+    POST_ADD_PROJECT ("POST:/projects/add", new PostAddProjectCommand()),
+    GET_UPDATE_PROJECT ("GET:/projects/update", new GetUpdateProjectCommand()),
+    POST_UPDATE_PROJECT ("POST:/projects/update", new PostUpdateProjectCommand()),
+    DELETE_PROJECT ("GET:/projects/delete", new DeleteProjectCommand()),
+
+    ALL_TASKS ("GET:/tasks", new AllTasksCommand()),
+    GET_ADD_TASK ("GET:/tasks/add", new GetAddTaskCommand()),
+    POST_ADD_TASK ("POST:/tasks/add", new PostAddTaskCommand()),
+    GET_UPDATE_TASK ("GET:/tasks/update", new GetUpdateTaskCommand()),
+    POST_UPDATE_TASK ("POST:/tasks/update", new PostUpdateTaskCommand()),
+    DELETE_TASK ("GET:/tasks/delete", new DeleteTaskCommand());
 
     private String key;
     private Command command;
