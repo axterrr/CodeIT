@@ -53,4 +53,22 @@ public class EmployeeService {
             return employeeDao.getByCredentials(credentials.getEmail(), credentials.getPassword());
         }
     }
+
+    public List<Employee> getAllManagers() {
+        try (EmployeeDao dao = daoFactory.createEmployeeDao()) {
+            return dao.getManagers();
+        }
+    }
+
+    public List<Employee> getAllDevelopers() {
+        try (EmployeeDao dao = daoFactory.createEmployeeDao()) {
+            return dao.getDevelopers();
+        }
+    }
+
+    public List<Employee> getAllTesters() {
+        try (EmployeeDao dao = daoFactory.createEmployeeDao()) {
+            return dao.getTesters();
+        }
+    }
 }

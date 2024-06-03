@@ -6,7 +6,10 @@ import codeit.models.entities.Project;
 import codeit.models.enums.ProjectStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class ProjectDto {
@@ -31,6 +34,9 @@ public class ProjectDto {
         if(startDate == null)
             startDate = LocalDateTime.now().toString();
 
+        if(status == null)
+            status = "Created";
+
         return new Project.Builder()
                 .setId(id)
                 .setOrder(new Order.Builder().setId(orderId).build())
@@ -40,8 +46,9 @@ public class ProjectDto {
                 .setGitHubLink(gitHubLink)
                 .setBudget(new BigDecimal(budget))
                 .setStartDate(LocalDateTime.parse(startDate))
-                .setDueDate(LocalDateTime.parse(dueDate))
-                .setEndDate(LocalDateTime.parse(endDate))
+                .setDueDate(LocalDateTime.of(LocalDate.parse(dueDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        LocalTime.MIDNIGHT))
+                .setEndDate(endDate == null ? null : LocalDateTime.parse(endDate))
                 .setStatus(ProjectStatus.getStatus(status))
                 .build();
     }

@@ -82,7 +82,8 @@ public class ProjectDao implements AutoCloseable {
             query.setBigDecimal(7, project.getBudget());
             query.setTimestamp(8, Timestamp.valueOf(project.getStartDate()));
             query.setTimestamp(9, Timestamp.valueOf(project.getDueDate()));
-            query.setTimestamp(10, Timestamp.valueOf(project.getEndDate()));
+            query.setTimestamp(10, project.getEndDate() == null ? null :
+                    Timestamp.valueOf(project.getEndDate()));
             query.setString(11, project.getStatus().getValue());
             query.executeUpdate();
         } catch (SQLException e) {
@@ -97,7 +98,8 @@ public class ProjectDao implements AutoCloseable {
             query.setString(3, project.getDescription());
             query.setString(4, project.getGitHubLink());
             query.setTimestamp(5, Timestamp.valueOf(project.getDueDate()));
-            query.setTimestamp(6, Timestamp.valueOf(project.getEndDate()));
+            query.setTimestamp(6, project.getEndDate() == null ? null :
+                    Timestamp.valueOf(project.getEndDate()));
             query.setString(7, project.getStatus().getValue());
             query.setString(8, project.getId());
             query.executeUpdate();
@@ -126,7 +128,7 @@ public class ProjectDao implements AutoCloseable {
                 .setBudget(resultSet.getBigDecimal(BUDGET))
                 .setStartDate(resultSet.getTimestamp(START_DATE).toLocalDateTime())
                 .setDueDate(resultSet.getTimestamp(DUE_DATE).toLocalDateTime())
-                .setEndDate(resultSet.getTimestamp(END_DATE).toLocalDateTime())
+                .setEndDate(resultSet.getTimestamp(END_DATE) == null ? null : resultSet.getTimestamp(END_DATE).toLocalDateTime())
                 .setStatus(ProjectStatus.getStatus(resultSet.getString(STATUS)))
                 .build();
     }

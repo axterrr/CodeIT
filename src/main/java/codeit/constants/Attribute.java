@@ -48,4 +48,7 @@ public class Attribute {
     public static final String TESTER_ID = "testerId";
     public static final String BRANCH_LINK = "branchLink";
     public static final String COMMENT = "comment";
+    public static final String MANAGERS = "managers";
+    public static final String DEVELOPERS = "developers";
+    public static final String TESTERS = "testers";
 }

@@ -22,6 +22,9 @@ public class EmployeeDao implements AutoCloseable {
             "WHERE employee_id=?";
     private static String DELETE = "DELETE FROM `employee` WHERE employee_id=?";
     private static String GET_BY_CREDENTIALS = "SELECT * FROM `employee` WHERE email=? AND password=?";
+    private static String GET_MANAGERS = "SELECT * FROM `employee` WHERE role='Project Manager'";
+    private static String GET_TESTERS = "SELECT * FROM `employee` WHERE role='Tester'";
+    private static String GET_DEVELOPERS = "SELECT * FROM `employee` WHERE role='Developer'";
 
     private static String ID = "employee_id";
     private static String FIRST_NAME = "first_name";
@@ -130,6 +133,45 @@ public class EmployeeDao implements AutoCloseable {
             throw new ServerException(e);
         }
         return employee;
+    }
+
+    public List<Employee> getManagers() {
+        List<Employee> employees = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_MANAGERS)) {
+            while (resultSet.next()) {
+                employees.add(extractEmployeeFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employees;
+    }
+
+    public List<Employee> getTesters() {
+        List<Employee> employees = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_TESTERS)) {
+            while (resultSet.next()) {
+                employees.add(extractEmployeeFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employees;
+    }
+
+    public List<Employee> getDevelopers() {
+        List<Employee> employees = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_DEVELOPERS)) {
+            while (resultSet.next()) {
+                employees.add(extractEmployeeFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return employees;
     }
 
     private static Employee extractEmployeeFromResultSet(ResultSet resultSet) throws SQLException {

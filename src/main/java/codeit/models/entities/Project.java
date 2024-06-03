@@ -4,6 +4,7 @@ import codeit.models.enums.ProjectStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Project {
     private String id;
@@ -146,6 +147,10 @@ public class Project {
         this.startDate = startDate;
     }
 
+    public String getStartDateString() {
+        return startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     public LocalDateTime getDueDate() {
         return dueDate;
     }
@@ -154,12 +159,20 @@ public class Project {
         this.dueDate = dueDate;
     }
 
+    public String getDueDateString() {
+        return dueDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     public LocalDateTime getEndDate() {
         return endDate;
     }
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEndDateString() {
+        return endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public ProjectStatus getStatus() {

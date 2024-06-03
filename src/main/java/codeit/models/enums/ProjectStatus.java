@@ -2,11 +2,11 @@ package codeit.models.enums;
 
 public enum ProjectStatus {
 
-    CREATED ("created"),
-    DEVELOPING ("developing"),
-    AWAITING_CONFIRMATION ("awaitingConfirmation"),
-    FINISHED ("finished"),
-    CANCELLED ("cancelled");
+    CREATED ("Created"),
+    DEVELOPING ("Developing"),
+    AWAITING_CONFIRMATION ("Awaiting for Confirmation"),
+    FINISHED ("Finished"),
+    CANCELLED ("Cancelled");
 
     private String value;
 
