@@ -4,6 +4,7 @@ import codeit.models.enums.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Order {
     private String id;
@@ -100,12 +101,20 @@ public class Order {
         return creationDate;
     }
 
+    public String getCreationDateString() {
+        return creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
     public LocalDateTime getDueDate() {
         return dueDate;
+    }
+
+    public String getDueDateString() {
+        return dueDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public void setDueDate(LocalDateTime dueDate) {

@@ -2,12 +2,12 @@ package codeit.models.enums;
 
 public enum OrderStatus {
 
-    PENDING ("pending"),
-    ACCEPTED ("accepted"),
-    DEVELOPING ("developing"),
-    DONE ("done"),
-    REJECTED ("rejected"),
-    CANCELLED ("cancelled");
+    PENDING ("Pending"),
+    ACCEPTED ("Accepted"),
+    DEVELOPING ("Developing"),
+    DONE ("Done"),
+    REJECTED ("Rejected"),
+    CANCELLED ("Cancelled");
 
     private String value;
 

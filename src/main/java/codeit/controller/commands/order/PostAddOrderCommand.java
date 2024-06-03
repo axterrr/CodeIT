@@ -24,7 +24,7 @@ public class PostAddOrderCommand implements Command {
         List<String> errors = OrderDtoValidator.getInstance().validate(orderDto);
 
         if (errors.isEmpty()) {
-            OrderService.getInstance().createOrder(orderDto.toOrder());
+            OrderService.getInstance().createOrder(orderDto.toOrder(request));
             redirectToAllOrdersPageWithSuccessMessage(request, response);
             return RedirectionManager.REDIRECTION;
         }

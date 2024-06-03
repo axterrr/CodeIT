@@ -24,7 +24,7 @@ public class PostUpdateOrderCommand implements Command {
         List<String> errors = OrderDtoValidator.getInstance().validate(orderDto);
 
         if (errors.isEmpty()) {
-            OrderService.getInstance().updateOrder(orderDto.toOrder());
+            OrderService.getInstance().updateOrder(orderDto.toOrder(request));
             redirectToAllOrdersPageWithSuccessMessage(request, response);
             return RedirectionManager.REDIRECTION;
         }

@@ -1,11 +1,16 @@
 package codeit.dto;
 
+import codeit.controller.utils.SessionManager;
 import codeit.models.entities.Client;
 import codeit.models.entities.Order;
 import codeit.models.enums.OrderStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class OrderDto {
@@ -19,13 +24,19 @@ public class OrderDto {
     private String cost;
     private String status;
 
-    public Order toOrder() {
+    public Order toOrder(HttpServletRequest request) {
 
         if (id == null)
             id = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
 
+        if(clientId == null)
+            clientId = SessionManager.getInstance().getClientFromSession(request.getSession()).getId();
+
         if(creationDate == null)
             creationDate = LocalDateTime.now().toString();
+
+        if(status == null)
+            status = "Pending";
 
         return new Order.Builder()
                 .setId(id)
@@ -33,7 +44,8 @@ public class OrderDto {
                 .setName(name)
                 .setDescription(description)
                 .setCreationDate(LocalDateTime.parse(creationDate))
-                .setDueDate(LocalDateTime.parse(dueDate))
+                .setDueDate(LocalDateTime.of(LocalDate.parse(dueDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        LocalTime.MIDNIGHT))
                 .setCost(new BigDecimal(cost))
                 .setStatus(OrderStatus.getStatus(status))
                 .build();
