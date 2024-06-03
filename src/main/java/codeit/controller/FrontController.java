@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = { "/*" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup = 1)
 public class FrontController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +31,10 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String commandKey = request.getMethod().toUpperCase() + ':' + request.getRequestURI();
+        String commandKey = request.getMethod().toUpperCase() + ':'
+                + request.getRequestURI().replaceFirst("/controller", "");
+        if(commandKey.endsWith(":"))
+            commandKey += "/";
         Command command = CommandEnum.getCommand(commandKey);
 
         try {

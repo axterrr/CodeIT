@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebFilter(urlPatterns = { "/*" })
+@WebFilter(urlPatterns = { "/controller/*" })
 public class UnauthorizedAccessFilter implements Filter {
 
     @Override
@@ -23,7 +23,7 @@ public class UnauthorizedAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws ServletException, IOException {
-
+        
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
