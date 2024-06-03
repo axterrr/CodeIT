@@ -18,7 +18,7 @@ public class EmployeeDao implements AutoCloseable {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static String UPDATE =
             "UPDATE `employee` " +
-            "SET first_name=?, last_name=?, specialisation=?, salary=?, email=?, phone_number=?, address=?, birth_date=?, password=? " +
+            "SET first_name=?, last_name=?, role=?, specialisation=?, salary=?, email=?, phone_number=?, address=?, birth_date=?, password=? " +
             "WHERE employee_id=?";
     private static String DELETE = "DELETE FROM `employee` WHERE employee_id=?";
     private static String GET_BY_CREDENTIALS = "SELECT * FROM `employee` WHERE email=? AND password=?";
@@ -93,14 +93,15 @@ public class EmployeeDao implements AutoCloseable {
         try (PreparedStatement query = connection.prepareStatement(UPDATE)) {
             query.setString(1, employee.getFirstName());
             query.setString(2, employee.getLastName());
-            query.setString(3, employee.getSpecialisation());
-            query.setBigDecimal(4, employee.getSalary());
-            query.setString(5, employee.getEmail());
-            query.setString(6, employee.getPhone());
-            query.setString(7, employee.getAddress());
-            query.setTimestamp(8, Timestamp.valueOf(employee.getBirthDate()));
-            query.setString(9, employee.getPassword());
-            query.setString(10, employee.getId());
+            query.setString(3, employee.getRole().getValue());
+            query.setString(4, employee.getSpecialisation());
+            query.setBigDecimal(5, employee.getSalary());
+            query.setString(6, employee.getEmail());
+            query.setString(7, employee.getPhone());
+            query.setString(8, employee.getAddress());
+            query.setTimestamp(9, Timestamp.valueOf(employee.getBirthDate()));
+            query.setString(10, employee.getPassword());
+            query.setString(11, employee.getId());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);

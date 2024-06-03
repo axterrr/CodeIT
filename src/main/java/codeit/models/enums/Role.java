@@ -2,10 +2,10 @@ package codeit.models.enums;
 
 public enum Role {
 
-    CEO ("ceo"),
-    PROJECT_MANAGER ("projectManager"),
-    DEVELOPER ("developer"),
-    TESTER ("tester");
+    CEO ("CEO"),
+    PROJECT_MANAGER ("Project Manager"),
+    DEVELOPER ("Developer"),
+    TESTER ("Tester");
 
     private String value;
 

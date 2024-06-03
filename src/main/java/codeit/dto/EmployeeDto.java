@@ -4,7 +4,10 @@ import codeit.models.entities.Employee;
 import codeit.models.enums.Role;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class EmployeeDto {
@@ -42,7 +45,8 @@ public class EmployeeDto {
                 .setPhone(phone)
                 .setAddress(address)
                 .setHireDate(LocalDateTime.parse(hireDate))
-                .setBirthDate(LocalDateTime.parse(birthDate))
+                .setBirthDate(LocalDateTime.of(LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        LocalTime.MIDNIGHT))
                 .setPassword(password)
                 .build();
     }

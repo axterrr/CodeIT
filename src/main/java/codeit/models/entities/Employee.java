@@ -4,6 +4,7 @@ import codeit.models.enums.Role;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Employee {
     private String id;
@@ -170,6 +171,9 @@ public class Employee {
 
     public LocalDateTime getBirthDate() {
         return birthDate;
+    }
+    public String getBirthDateString() {
+        return birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public void setBirthDate(LocalDateTime birthDate) {
