@@ -2,12 +2,12 @@ package codeit.models.enums;
 
 public enum TaskStatus {
 
-    CREATED ("created"),
-    DEVELOPING ("developing"),
-    TESTING ("testing"),
-    AWAITING_CONFIRMATION ("awaitingConfirmation"),
-    FINISHED ("finished"),
-    CANCELLED ("cancelled");
+    CREATED ("Created"),
+    DEVELOPING ("Developing"),
+    TESTING ("Testing"),
+    AWAITING_CONFIRMATION ("Awaiting for Confirmation"),
+    FINISHED ("Finished"),
+    CANCELLED ("Cancelled");
 
     private String value;
 

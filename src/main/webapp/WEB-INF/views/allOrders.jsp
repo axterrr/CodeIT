@@ -87,17 +87,17 @@
                         <span class="card-status card-status-value">${order.getStatus().getValue()}</span>
                     </span>
                 </div>
+                <div class="card-cost-container">
+                    <span class="card-cost">Cost :
+                        <span class="card-cost card-cost-value">${order.getCost()}</span>
+                    </span>
+                </div>
                 <div class="card-dates-container">
                     <span class="card-start-date">Creation date:<br>
                         <span class="card-start-date card-start-date-value">${order.getCreationDateString()}</span>
                     </span>
                     <span class="card-due-date">Due date:<br>
                         <span class="card-due-date card-due-date-value">${order.getDueDateString()}</span>
-                    </span>
-                </div>
-                <div class="card-cost-container">
-                    <span class="card-cost">Manager Name :
-                        <span class="card-cost card-cost-value">${order.getCost()}</span>
                     </span>
                 </div>
                 <div class="card-buttons-container">

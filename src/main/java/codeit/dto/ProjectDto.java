@@ -37,6 +37,9 @@ public class ProjectDto {
         if(status == null)
             status = "Created";
 
+        if(managerId.isEmpty())
+            managerId = null;
+
         return new Project.Builder()
                 .setId(id)
                 .setOrder(new Order.Builder().setId(orderId).build())

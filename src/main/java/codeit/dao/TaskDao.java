@@ -83,7 +83,7 @@ public class TaskDao implements AutoCloseable {
             query.setString(7, task.getBranchLink());
             query.setTimestamp(8, Timestamp.valueOf(task.getStartDate()));
             query.setTimestamp(9, Timestamp.valueOf(task.getDueDate()));
-            query.setTimestamp(10, Timestamp.valueOf(task.getEndDate()));
+            query.setTimestamp(10, task.getEndDate() == null ? null : Timestamp.valueOf(task.getEndDate()));
             query.setString(11, task.getStatus().getValue());
             query.setString(12, task.getComment());
             query.executeUpdate();
@@ -100,7 +100,7 @@ public class TaskDao implements AutoCloseable {
             query.setString(4, task.getDescription());
             query.setString(5, task.getBranchLink());
             query.setTimestamp(6, Timestamp.valueOf(task.getDueDate()));
-            query.setTimestamp(7, Timestamp.valueOf(task.getEndDate()));
+            query.setTimestamp(7, task.getEndDate() == null ? null : Timestamp.valueOf(task.getEndDate()));
             query.setString(8, task.getStatus().getValue());
             query.setString(9, task.getComment());
             query.setString(10, task.getId());
@@ -130,7 +130,7 @@ public class TaskDao implements AutoCloseable {
                 .setBranchLink(resultSet.getString(TASK_LINK))
                 .setStartDate(resultSet.getTimestamp(START_DATE).toLocalDateTime())
                 .setDueDate(resultSet.getTimestamp(DUE_DATE).toLocalDateTime())
-                .setEndDate(resultSet.getTimestamp(END_DATE).toLocalDateTime())
+                .setEndDate(resultSet.getTimestamp(END_DATE) == null ? null : resultSet.getTimestamp(END_DATE).toLocalDateTime())
                 .setStatus(TaskStatus.getStatus(resultSet.getString(STATUS)))
                 .setComment(resultSet.getString(COMMENT))
                 .build();

@@ -10,7 +10,10 @@ import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class TaskDto {
@@ -36,6 +39,15 @@ public class TaskDto {
         if(startDate == null)
             startDate = LocalDateTime.now().toString();
 
+        if(status == null)
+            status = "Created";
+
+        if(developerId.isEmpty())
+            developerId = null;
+
+        if(testerId.isEmpty())
+            testerId = null;
+
         return new Task.Builder()
                 .setId(id)
                 .setProject(new Project.Builder().setId(projectId).build())
@@ -45,8 +57,9 @@ public class TaskDto {
                 .setDescription(description)
                 .setBranchLink(branchLink)
                 .setStartDate(LocalDateTime.parse(startDate))
-                .setDueDate(LocalDateTime.parse(dueDate))
-                .setEndDate(LocalDateTime.parse(endDate))
+                .setDueDate(LocalDateTime.of(LocalDate.parse(dueDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        LocalTime.MIDNIGHT))
+                .setEndDate(endDate == null ? null : LocalDateTime.parse(endDate))
                 .setStatus(TaskStatus.getStatus(status))
                 .setComment(comment)
                 .build();

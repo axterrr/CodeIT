@@ -3,6 +3,7 @@ package codeit.models.entities;
 import codeit.models.enums.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Task {
     private String id;
@@ -150,6 +151,9 @@ public class Task {
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
+    public String getStartDateString() {
+        return startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 
     public LocalDateTime getDueDate() {
         return dueDate;
@@ -158,6 +162,9 @@ public class Task {
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
+    public String getDueDateString() {
+        return dueDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 
     public LocalDateTime getEndDate() {
         return endDate;
@@ -165,6 +172,9 @@ public class Task {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+    public String getEndDateString() {
+        return endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public TaskStatus getStatus() {
