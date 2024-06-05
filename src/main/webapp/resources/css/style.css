@@ -400,21 +400,28 @@ select {
     position: static;
 }
 
-.add-container {
+.add-container, .log-in-view-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.add-form {
+.add-form, .login-form {
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 40px 0;
     gap: 20px;
+    align-self: center;
+}
+
+.login-form {
+    width: 500px;
 }
 
 .form-group {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -423,7 +430,7 @@ select {
 }
 
 .input-container {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -462,10 +469,24 @@ h1 {
     color: #2F0D2C;
 }
 
-.add-form-input:hover {
+.add-form-input:hover, .login-form-input:hover {
     background-color: #ecdaff;
 }
 
+.error-container {
+    padding: 100px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.error-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    color: #2F0D2C;
+}
 
 @media (max-width: 1200px) {
     .cards-container {
@@ -501,4 +522,7 @@ h1 {
         width: 150px;
     }
 
+    .login-form {
+        width: 80%;
+    }
 }
