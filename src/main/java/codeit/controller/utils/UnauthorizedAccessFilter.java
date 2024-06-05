@@ -23,11 +23,12 @@ public class UnauthorizedAccessFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
-        if (httpRequest.getRequestURI().equals("/") || httpRequest.getRequestURI().equals("/login")) {
+        if (httpRequest.getRequestURI().equals("/controller/")
+                || httpRequest.getRequestURI().equals("/controller/login")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

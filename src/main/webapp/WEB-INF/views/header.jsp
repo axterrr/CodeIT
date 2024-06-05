@@ -24,8 +24,18 @@
             <a class="page-button" href="${pageContext.request.contextPath}/controller/clients">Clients</a>
             <a class="page-button" href="${pageContext.request.contextPath}/controller/employees">Employees</a>
         </div>
+        <c:if test="${not empty employee}">
+            <p class="navbar-text">Logged in as ${employee.getRole().getValue()} ${employee.getEmail()}</p>
+        </c:if>
         <div class="navbar-login">
-            <a class="login-button" href="${pageContext.request.contextPath}/controller/login">Log in</a>
+            <c:choose>
+                <c:when test="${empty employee and empty client}">
+                    <a class="login-button" href="${pageContext.request.contextPath}/controller/login">Log in</a>
+                </c:when>
+                <c:otherwise>
+                    <a class="login-button" href="${pageContext.request.contextPath}/controller/logout">Log out</a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
 </div>
