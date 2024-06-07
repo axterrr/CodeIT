@@ -18,6 +18,13 @@
             <form class="add-form" action="./add" method="POST">
         </c:otherwise>
     </c:choose>
+        <c:if test="${not empty requestScope.errors}">
+            <div class="alert alert-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="form-group">
             <c:if test="${not empty requestScope.employeeDto.getId()}">
                 <input type="hidden" name="employeeId" value="<c:out value="${requestScope.employeeDto.getId()}"/>">
@@ -35,9 +42,9 @@
             <div class="input-container">
                 <label class="input-label" for="role-input">Role</label>
                 <select class="add-form-input form-select" id="role-input" name="role">
-                    <option value="Project Manager" <c:if test="${requestScope.employeeDto.getRole().getValue() == 'Project Manager'}">selected</c:if>>Project Manager</option>
-                    <option value="Developer" <c:if test="${requestScope.employeeDto.getRole().getValue() == 'Developer'}">selected</c:if>>Developer</option>
-                    <option value="Tester" <c:if test="${requestScope.employeeDto.getRole().getValue() == 'Tester'}">selected</c:if>>Tester</option>
+                    <option value="Project Manager" <c:if test="${requestScope.employeeDto.getRoleString() == 'Project Manager'}">selected</c:if>>Project Manager</option>
+                    <option value="Developer" <c:if test="${requestScope.employeeDto.getRoleString() == 'Developer'}">selected</c:if>>Developer</option>
+                    <option value="Tester" <c:if test="${requestScope.employeeDto.getRoleString() == 'Tester'}">selected</c:if>>Tester</option>
                 </select>
             </div>
             <div class="input-container">

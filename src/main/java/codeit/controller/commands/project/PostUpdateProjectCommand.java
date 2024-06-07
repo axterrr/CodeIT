@@ -6,6 +6,8 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.ProjectDto;
+import codeit.models.entities.Project;
+import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 import codeit.validators.entities.ProjectDtoValidator;
 
@@ -29,6 +31,7 @@ public class PostUpdateProjectCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
+        request.setAttribute(Attribute.MANAGERS, EmployeeService.getInstance().getAllManagers());
         addRequestAttributes(request, projectDto, errors);
         return Page.ADD_UPDATE_PROJECT_VIEW;
     }

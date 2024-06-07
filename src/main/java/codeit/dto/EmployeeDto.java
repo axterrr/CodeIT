@@ -148,7 +148,7 @@ public class EmployeeDto {
         this.lastName = lastName;
     }
 
-    public String getRole() {
+    public String getRoleString() {
         return role;
     }
 
@@ -204,7 +204,7 @@ public class EmployeeDto {
         this.hireDate = hireDate;
     }
 
-    public String getBirthDate() {
+    public String getBirthDateString() {
         return birthDate;
     }
 

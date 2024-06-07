@@ -120,6 +120,9 @@ public class Employee {
     public void setRole(Role role) {
         this.role = role;
     }
+    public String getRoleString() {
+        return role.getValue();
+    }
 
     public String getSpecialisation() {
         return specialisation;

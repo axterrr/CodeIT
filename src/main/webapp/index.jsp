@@ -1,19 +1,18 @@
 <%@include file="WEB-INF/views/header.jsp"%>
-    <%--<div class="row-fluid" align="center">
-        <c:if test="${not empty param.success}">
+    <c:if test="${not empty param.success}">
+        <div class="row-fluid">
             <div class="alert alert-success">
-                    ${param.success}
+                <p>${param.success}</p>
             </div>
-        </c:if>
-    </div>
-    <div class="row-fluid">
-        <c:if test="${not empty param.error}">
+        </div>
+    </c:if>
+    <c:if test="${not empty param.error}">
+        <div class="row-fluid">
             <div class="alert alert-danger">
-                    ${param.error}
+                <p>${param.error}</p>
             </div>
-        </c:if>
-    </div>--%>
-
+        </div>
+    </c:if>
     <div class="container">
         <h2>
             Welcome to CodeIT !

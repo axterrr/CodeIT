@@ -18,6 +18,13 @@
             <form class="add-form" action="./add" method="POST">
         </c:otherwise>
     </c:choose>
+        <c:if test="${not empty requestScope.errors}">
+            <div class="alert alert-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="form-group">
             <c:if test="${not empty requestScope.clientDto.getId()}">
                 <input type="hidden" name="clientId" value="<c:out value="${requestScope.clientDto.getId()}"/>">

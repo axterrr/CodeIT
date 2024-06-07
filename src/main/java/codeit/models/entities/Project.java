@@ -103,6 +103,10 @@ public class Project {
         return manager;
     }
 
+    public String getManagerId() {
+        return manager == null ? null : manager.getId();
+    }
+
     public void setManager(Employee manager) {
         this.manager = manager;
     }

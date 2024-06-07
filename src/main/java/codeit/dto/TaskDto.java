@@ -198,7 +198,7 @@ public class TaskDto {
         this.startDate = startDate;
     }
 
-    public String getDueDate() {
+    public String getDueDateString() {
         return dueDate;
     }
 

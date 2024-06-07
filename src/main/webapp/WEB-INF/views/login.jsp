@@ -2,6 +2,13 @@
 <div class="container log-in-view-container">
     <h1>Authorization</h1>
     <form class="login-form" action="./login" method="POST" role="form">
+        <c:if test="${not empty requestScope.errors}">
+            <div class="alert alert-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="form-group">
             <div class="input-container">
                 <label class="input-label" for="email-input">Email</label>

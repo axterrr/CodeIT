@@ -18,6 +18,13 @@
             <form class="add-form" action="./add" method="POST">
         </c:otherwise>
     </c:choose>
+        <c:if test="${not empty requestScope.errors}">
+            <div class="alert alert-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="form-group">
             <c:if test="${not empty requestScope.projectDto.getId()}">
                 <input type="hidden" name="projectId" value="<c:out value="${requestScope.projectDto.getId()}"/>">
@@ -33,7 +40,7 @@
                     <select class="add-form-input form-select" id="order-input" name="orderId">
                         <option value=""></option>
                         <c:forEach items="${orders}" var="order">
-                            <option value=${order.getId()}>${order.getName()}</option>
+                            <option value=${order.getId()} <c:if test="${requestScope.projectDto.getOrderId() == order.getId()}">selected</c:if>>${order.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -43,7 +50,7 @@
                 <select class="add-form-input form-select" id="manager-input" name="managerId">
                     <option value=""></option>
                     <c:forEach items="${managers}" var="manager">
-                        <option value=${manager.getId()} <c:if test="${requestScope.projectDto.getManager().getId() == manager.getId()}">selected</c:if>>${manager.getFirstName()} ${manager.getLastName()}</option>
+                        <option value=${manager.getId()} <c:if test="${requestScope.projectDto.getManagerId() == manager.getId()}">selected</c:if>>${manager.getFirstName()} ${manager.getLastName()}</option>
                     </c:forEach>
                 </select>
             </div>

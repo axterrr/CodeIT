@@ -18,6 +18,13 @@
                 <form class="add-form" action="./add" method="POST">
         </c:otherwise>
     </c:choose>
+        <c:if test="${not empty requestScope.errors}">
+            <div class="alert alert-danger">
+                <c:forEach items="${requestScope.errors}" var="error">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
         <div class="form-group">
             <c:if test="${not empty requestScope.taskDto.getId()}">
                 <input type="hidden" name="taskId" value="<c:out value="${requestScope.taskDto.getId()}"/>">
@@ -33,7 +40,7 @@
                     <select class="input-select" id="project-input" name="projectId">
                         <option value=""></option>
                         <c:forEach items="${projects}" var="project">
-                            <option value=${project.getId()}>${project.getName()}</option>
+                            <option value=${project.getId()} <c:if test="${requestScope.taskDto.getProjectId() == project.getId()}">selected</c:if>>${project.getName()}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -43,7 +50,7 @@
                 <select class="input-select" id="developer-input" name="developerId">
                     <option value=""></option>
                     <c:forEach items="${developers}" var="developer">
-                        <option value=${developer.getId()} <c:if test="${requestScope.taskDto.getDeveloper().getId() == developer.getId()}">selected</c:if>>${developer.getFirstName()} ${developer.getLastName()}</option>
+                        <option value=${developer.getId()} <c:if test="${requestScope.taskDto.getDeveloperId() == developer.getId()}">selected</c:if>>${developer.getFirstName()} ${developer.getLastName()}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -52,7 +59,7 @@
                 <select class="input-select" id="tester-input" name="testerId">
                     <option value=""></option>
                     <c:forEach items="${testers}" var="tester">
-                        <option value=${tester.getId()} <c:if test="${requestScope.taskDto.getTester().getId() == tester.getId()}">selected</c:if>>${tester.getFirstName()} ${tester.getLastName()}</option>
+                        <option value=${tester.getId()} <c:if test="${requestScope.taskDto.getTesterId() == tester.getId()}">selected</c:if>>${tester.getFirstName()} ${tester.getLastName()}</option>
                     </c:forEach>
                 </select>
             </div>

@@ -184,7 +184,7 @@ public class ProjectDto {
         this.startDate = startDate;
     }
 
-    public String getDueDate() {
+    public String getDueDateString() {
         return dueDate;
     }
 

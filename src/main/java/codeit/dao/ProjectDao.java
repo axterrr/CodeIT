@@ -25,6 +25,7 @@ public class ProjectDao implements AutoCloseable {
             "SET manager_id=?, name=?, description=?, project_link=?, due_date=?, end_date=?, status=? " +
             "WHERE project_id=?";
     private static String DELETE = "DELETE FROM `project` WHERE project_id=?";
+    private static String GET_BY_ORDER = "SELECT * FROM `project` WHERE order_id=?";
 
     private static String ID = "project_id";
     private static String ORDER_ID = "order_id";
@@ -115,6 +116,20 @@ public class ProjectDao implements AutoCloseable {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public Project getByOrder(String id) {
+        Project project = null;
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_ORDER)) {
+            query.setString(1, id);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                project = extractProjectFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return project;
     }
 
     private static Project extractProjectFromResultSet(ResultSet resultSet) throws SQLException {

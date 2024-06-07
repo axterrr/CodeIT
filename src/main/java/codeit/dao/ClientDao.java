@@ -21,6 +21,7 @@ public class ClientDao implements AutoCloseable {
             "WHERE client_id=?";
     private static String DELETE = "DELETE FROM `client` WHERE client_id=?";
     private static String GET_BY_CREDENTIALS = "SELECT * FROM `client` WHERE email=? AND password=?";
+    private static String GET_BY_EMAIL = "SELECT * FROM `client` WHERE email=?";
 
     private static String ID = "client_id";
     private static String NAME = "name";
@@ -112,6 +113,20 @@ public class ClientDao implements AutoCloseable {
         try (PreparedStatement query = connection.prepareStatement(GET_BY_CREDENTIALS)) {
             query.setString(1, email);
             query.setString(2, password);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                client = extractClientFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return client;
+    }
+
+    public Client getByEmail(String email) {
+        Client client = null;
+        try (PreparedStatement query = connection.prepareStatement(GET_BY_EMAIL)) {
+            query.setString(1, email);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 client = extractClientFromResultSet(resultSet);

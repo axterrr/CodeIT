@@ -52,7 +52,7 @@ public class PostLoginCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
-        errors.add("Login or Password is not correct");
+        errors.add("Email or Password is not correct");
         addRequestAttributes(request, credentialsDto, errors);
         return Page.LOGIN_VIEW;
     }

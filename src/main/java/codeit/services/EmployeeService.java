@@ -54,6 +54,12 @@ public class EmployeeService {
         }
     }
 
+    public Employee getEmployeeByEmail(String email) {
+        try (EmployeeDao employeeDao = daoFactory.createEmployeeDao()) {
+            return employeeDao.getByEmail(email);
+        }
+    }
+
     public List<Employee> getAllManagers() {
         try (EmployeeDao dao = daoFactory.createEmployeeDao()) {
             return dao.getManagers();

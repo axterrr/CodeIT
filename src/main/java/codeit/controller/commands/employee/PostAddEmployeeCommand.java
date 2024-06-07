@@ -6,6 +6,7 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.EmployeeDto;
+import codeit.services.ClientService;
 import codeit.services.EmployeeService;
 import codeit.validators.entities.EmployeeDtoValidator;
 
@@ -24,6 +25,14 @@ public class PostAddEmployeeCommand implements Command {
         List<String> errors = EmployeeDtoValidator.getInstance().validate(employeeDto);
 
         if (errors.isEmpty()) {
+
+            if (ClientService.getInstance().getClientByEmail(employeeDto.getEmail()) != null
+                    || EmployeeService.getInstance().getEmployeeByEmail(employeeDto.getEmail()) != null) {
+                errors.add("Email is already taken");
+                addRequestAttributes(request, employeeDto, errors);
+                return Page.ADD_UPDATE_EMPLOYEE_VIEW;
+            }
+
             EmployeeService.getInstance().createEmployee(employeeDto.toEmployee());
             redirectToAllEmployeesPageWithSuccessMessage(request, response);
             return RedirectionManager.REDIRECTION;

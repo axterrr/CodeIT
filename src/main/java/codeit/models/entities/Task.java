@@ -108,12 +108,20 @@ public class Task {
         return developer;
     }
 
+    public String getDeveloperId() {
+        return developer == null ? null : developer.getId();
+    }
+
     public void setDeveloper(Employee developer) {
         this.developer = developer;
     }
 
     public Employee getTester() {
         return tester;
+    }
+
+    public String getTesterId() {
+        return tester == null ? null : tester.getId();
     }
 
     public void setTester(Employee tester) {

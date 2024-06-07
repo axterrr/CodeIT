@@ -13,7 +13,7 @@ public class GetAddProjectCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllOrders());
+        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllOrdersWithoutProjects());
         request.setAttribute(Attribute.MANAGERS, EmployeeService.getInstance().getAllManagers());
         return Page.ADD_UPDATE_PROJECT_VIEW;
     }

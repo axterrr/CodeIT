@@ -23,6 +23,10 @@ public class OrderDao implements AutoCloseable {
             "SET name=?, description=?, due_date=?, cost=?, status=? " +
             "WHERE order_id=?";
     private static String DELETE = "DELETE FROM `order` WHERE order_id=?";
+    private static String GET_ALL_WITHOUT_PROJECTS =
+            "SELECT * FROM `order` " +
+            "WHERE order_id NOT IN (SELECT order_id " +
+            "                       FROM project)";
 
     private static String ID = "order_id";
     private static String CLIENT_ID = "client_id";
@@ -103,6 +107,19 @@ public class OrderDao implements AutoCloseable {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public List<Order> getAllWithoutProjects() {
+        List<Order> orders = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_ALL_WITHOUT_PROJECTS)) {
+            while (resultSet.next()) {
+                orders.add(extractOrderFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return orders;
     }
 
     private static Order extractOrderFromResultSet(ResultSet resultSet) throws SQLException {

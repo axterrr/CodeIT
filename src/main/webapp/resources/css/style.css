@@ -488,6 +488,29 @@ h1 {
     color: #2F0D2C;
 }
 
+.row-fluid {
+    padding: 0 100px;
+}
+
+.alert {
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    text-align: center;
+}
+
+.alert-danger {
+    color:#a94442;
+    background-color:#f2dede;
+    border-color:#ebccd1
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
 @media (max-width: 1200px) {
     .cards-container {
         grid-template-columns: repeat(2, 1fr);

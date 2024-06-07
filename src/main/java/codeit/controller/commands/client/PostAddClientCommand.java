@@ -7,6 +7,7 @@ import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.ClientDto;
 import codeit.services.ClientService;
+import codeit.services.EmployeeService;
 import codeit.validators.entities.ClientDtoValidator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,14 @@ public class PostAddClientCommand implements Command {
         List<String> errors = ClientDtoValidator.getInstance().validate(clientDto);
 
         if (errors.isEmpty()) {
+
+            if (EmployeeService.getInstance().getEmployeeByEmail(clientDto.getEmail()) != null
+                    || ClientService.getInstance().getClientByEmail(clientDto.getEmail()) != null) {
+                errors.add("Email is already taken");
+                addRequestAttributes(request, clientDto, errors);
+                return Page.ADD_UPDATE_CLIENT_VIEW;
+            }
+
             ClientService.getInstance().createClient(clientDto.toClient());
             redirectToAllClientsPageWithSuccessMessage(request, response);
             return RedirectionManager.REDIRECTION;

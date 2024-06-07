@@ -91,6 +91,20 @@
             </div>
         </div>
     </div>
+    <c:if test="${not empty param.success}">
+        <div class="row-fluid">
+            <div class="alert alert-success">
+                <p>${param.success}</p>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${not empty param.error}">
+        <div class="row-fluid">
+            <div class="alert alert-danger">
+                <p>${param.error}</p>
+            </div>
+        </div>
+    </c:if>
     <div class="cards-container tasks-container">
         <c:forEach items="${tasks}" var="task">
             <div class="card task-card">

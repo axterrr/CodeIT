@@ -46,4 +46,10 @@ public class ProjectService {
             dao.delete(projectId);
         }
     }
+
+    public Project getProjectByOrder(String orderId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            return dao.getByOrder(orderId);
+        }
+    }
 }

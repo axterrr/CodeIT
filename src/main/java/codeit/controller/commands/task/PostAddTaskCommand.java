@@ -6,6 +6,8 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.TaskDto;
+import codeit.services.EmployeeService;
+import codeit.services.ProjectService;
 import codeit.services.TaskService;
 import codeit.validators.entities.TaskDtoValidator;
 
@@ -29,6 +31,9 @@ public class PostAddTaskCommand implements Command {
             return RedirectionManager.REDIRECTION;
         }
 
+        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllProjects());
+        request.setAttribute(Attribute.DEVELOPERS, EmployeeService.getInstance().getAllDevelopers());
+        request.setAttribute(Attribute.TESTERS, EmployeeService.getInstance().getAllTesters());
         addRequestAttributes(request, taskDto, errors);
         return Page.ADD_UPDATE_TASK_VIEW;
     }
