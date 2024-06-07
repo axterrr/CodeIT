@@ -46,4 +46,22 @@ public class TaskService {
             dao.delete(taskId);
         }
     }
+
+    public List<Task> getAllTasksByProject(String projectId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            return dao.getAllByProject(projectId);
+        }
+    }
+
+    public List<Task> getAllTasksByDeveloper(String developerId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            return dao.getAllByDeveloper(developerId);
+        }
+    }
+
+    public List<Task> getAllTasksByTester(String testerId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            return dao.getAllByTester(testerId);
+        }
+    }
 }

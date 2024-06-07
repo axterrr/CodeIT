@@ -52,4 +52,10 @@ public class OrderService {
             return dao.getAllWithoutProjects();
         }
     }
+
+    public List<Order> getAllOrdersByClient(String clientId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            return dao.getAllByClient(clientId);
+        }
+    }
 }

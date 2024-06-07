@@ -31,12 +31,14 @@ public class Attribute {
     public static final String ORDERS = "orders";
     public static final String ORDER_ID = "orderId";
     public static final String ORDER_DTO = "orderDto";
+    public static final String ORDER = "order";
     public static final String DUE_DATE = "dueDate";
     public static final String COST = "cost";
     public static final String STATUS = "status";
     public static final String PROJECTS = "projects";
     public static final String PROJECT_ID = "projectId";
     public static final String PROJECT_DTO = "projectDto";
+    public static final String PROJECT = "project";
     public static final String MANAGER_ID = "managerId";
     public static final String PROJECT_LINK = "projectLink";
     public static final String BUDGET = "budget";
@@ -44,6 +46,7 @@ public class Attribute {
     public static final String TASKS = "tasks";
     public static final String TASK_ID = "taskId";
     public static final String TASK_DTO = "taskDto";
+    public static final String TASK = "task";
     public static final String DEVELOPER_ID = "developerId";
     public static final String TESTER_ID = "testerId";
     public static final String BRANCH_LINK = "branchLink";

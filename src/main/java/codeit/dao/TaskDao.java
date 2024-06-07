@@ -25,6 +25,9 @@ public class TaskDao implements AutoCloseable {
             "SET developer_id=?, tester_id=?, name=?, description=?, task_link=?, due_date=?, end_date=?, status=?, comment=? " +
             "WHERE task_id=?";
     private static String DELETE = "DELETE FROM `task` WHERE task_id=?";
+    private static String GET_ALL_BY_PROJECT = "SELECT * FROM `task` WHERE project_id=?";
+    private static String GET_ALL_BY_DEVELOPER = "SELECT * FROM `task` WHERE developer_id=?";
+    private static String GET_ALL_BY_TESTER = "SELECT * FROM `task` WHERE tester_id=?";
 
     private static String ID = "task_id";
     private static String PROJECT_ID = "project_id";
@@ -117,6 +120,48 @@ public class TaskDao implements AutoCloseable {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public List<Task> getAllByProject(String projectId) {
+        List<Task> tasks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_PROJECT)) {
+            query.setString(1, projectId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                tasks.add(extractTaskFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return tasks;
+    }
+
+    public List<Task> getAllByDeveloper(String developerId) {
+        List<Task> tasks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_DEVELOPER)) {
+            query.setString(1, developerId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                tasks.add(extractTaskFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return tasks;
+    }
+
+    public List<Task> getAllByTester(String testerId) {
+        List<Task> tasks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_TESTER)) {
+            query.setString(1, testerId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                tasks.add(extractTaskFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return tasks;
     }
 
     private static Task extractTaskFromResultSet(ResultSet resultSet) throws SQLException {

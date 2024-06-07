@@ -11,6 +11,12 @@ public class Page {
     public static final String LOGIN_VIEW = PREFIX + "login" + SUFFIX;
     public static final String PAGE_NOT_FOUND = PREFIX + ERROR_PREFIX + "pageNotFound" + SUFFIX;
 
+    public static final String CLIENT_VIEW = PREFIX + "client" + SUFFIX;
+    public static final String ORDER_VIEW = PREFIX + "order" + SUFFIX;
+    public static final String PROJECT_VIEW = PREFIX + "project" + SUFFIX;
+    public static final String EMPLOYEE_VIEW = PREFIX + "employee" + SUFFIX;
+    public static final String TASK_VIEW = PREFIX + "task" + SUFFIX;
+
     public static final String ALL_CLIENTS_VIEW = PREFIX + "allClients" + SUFFIX;
     public static final String ALL_ORDERS_VIEW = PREFIX + "allOrders" + SUFFIX;
     public static final String ALL_PROJECTS_VIEW = PREFIX + "allProjects" + SUFFIX;
