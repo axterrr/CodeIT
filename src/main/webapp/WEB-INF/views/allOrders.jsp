@@ -1,40 +1,92 @@
 <%@include file="/WEB-INF/views/header.jsp"%>
 <div class="container all-container orders-view-container">
+    <div id="forSideMenu"></div>
     <div id="sideMenu" class="menu side-menu">
         <a href="#" class="button close-button" onclick="closeMenu()">&times;</a>
-        <form class="filter-form" action="${pageContext.request.contextPath}/controller/employees/role"
-              method="POST" role="form">
+        <form class="filter-form" action="${pageContext.request.contextPath}/controller/orders" method="GET" role="form">
             <div class="form-group">
                 <div class="filter-container">
                     <label for="filter-status-group" class="filter-label">Status</label>
                     <div class="checkbox-group" id="filter-status-group">
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="pending">Pending</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="accepted">Accepted</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="developing">Developing</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="done">Done</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="rejected">Rejected</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="cancelled">Cancelled</label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Pending"
+                                   <c:if test="${requestScope.statuses.contains('Pending')}">checked</c:if>/>
+                            Pending
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Accepted"
+                                   <c:if test="${requestScope.statuses.contains('Accepted')}">checked</c:if>/>
+                            Accepted
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Developing"
+                                   <c:if test="${requestScope.statuses.contains('Developing')}">checked</c:if>/>
+                            Developing
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Done"
+                                   <c:if test="${requestScope.statuses.contains('Done')}">checked</c:if>/>
+                            Done
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Rejected"
+                                   <c:if test="${requestScope.statuses.contains('Rejected')}">checked</c:if>/>
+                            Rejected
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="statuses" value="Cancelled"
+                                   <c:if test="${requestScope.statuses.contains('Cancelled')}">checked</c:if>/>
+                            Cancelled
+                        </label>
                     </div>
                 </div>
                 <div class="filter-container">
                     <label for="filter-client-group" class="filter-label">Client</label>
-                    <div class="checkbox-group" id="filter-client-group">
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="tetiana">Tetiana</label>
-                        <label class="checkbox-label"><input type="checkbox" name="status" value="vladyslav">Vladyslav</label>
+                    <select class="filter-select" id="filter-client-group">
+                        <option></option>
+                        <c:forEach items="${clients}" var="client">
+                            <option value="${client.getId()}">${client.getName()}</option>
+                        </c:forEach>
+                    </select>
+                    <div id="clientsFilterContainer">
+                        <c:forEach items="${selectedClients}" var="client">
+                            <div class="client-module" id="cm${client.getId()}" style="width: 100%; height: fit-content;
+                            display: flex; justify-content: space-between; align-items: center;">
+                                <p style="margin: 0; font-size: 16px;">${client.getName()}</p>
+                                <input type="hidden" name="selectedClients" value="${client.getId()}">
+                                <button class="button modal-button" type="button" style="border: none;">&times;</button>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="filter-container">
                     <label for="filter-creation-date-group" class="filter-label">Creation Date</label>
                     <div class="dates-input-container" id="filter-creation-date-group">
-                        <label class="date-label">From<input type="date" class="date-input from-date"/></label>
-                        <label class="date-label">To<input type="date" class="date-input to-date"/></label>
+                        <label class="date-label">
+                            From
+                            <input type="date" class="date-input from-date" name="startDateFrom"
+                                   value="${requestScope.startDateFrom}"/>
+                        </label>
+                        <label class="date-label">
+                            To
+                            <input type="date" class="date-input to-date" name="startDateTo"
+                                   value="${requestScope.startDateTo}"/>
+                        </label>
                     </div>
                 </div>
                 <div class="filter-container">
                     <label for="filter-due-date-group" class="filter-label">Due Date</label>
                     <div class="dates-input-container" id="filter-due-date-group">
-                        <label class="date-label">From<input type="date" class="date-input from-date"/></label>
-                        <label class="date-label">To<input type="date" class="date-input to-date"/></label>
+                        <label class="date-label">
+                            From
+                            <input type="date" class="date-input from-date" name="dueDateFrom"
+                                   value="${requestScope.dueDateFrom}"/>
+                        </label>
+                        <label class="date-label">
+                            To
+                            <input type="date" class="date-input to-date" name="dueDateTo"
+                                   value="${requestScope.dueDateTo}"/>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -87,7 +139,7 @@
     </c:if>
     <div class="cards-container orders-container">
         <c:forEach items="${orders}" var="order">
-            <div class="card order-card">
+            <div class="card order-card" onclick="location.href='${pageContext.request.contextPath}/controller/orders/order?orderId=${order.getId()}';">
                 <div class="card-status-icon">
                     <img src="img/status.png" alt=""/>
                 </div>
@@ -115,10 +167,64 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}';">Delete Order</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}';">Delete Order</button>
                 </div>
             </div>
         </c:forEach>
     </div>
 </div>
+
+<script>
+    function addClientModule(clientId, clientName) {
+        let clientModule = document.getElementById('cm'+clientId);
+        if(!clientModule)
+        {
+            let clientModule = document.createElement('div');
+            clientModule.className = 'client-module';
+            clientModule.id = 'cm'+clientId;
+            clientModule.style.width = '100%';
+            clientModule.style.height = 'fit-content';
+            clientModule.style.display = 'flex';
+            clientModule.style.justifyContent = 'space-between';
+            clientModule.style.alignItems = 'center';
+            clientModule.style.paddingLeft = '10px 25px';
+
+            let clientNameLabel = document.createElement('p');
+            clientNameLabel.textContent = clientName;
+            clientNameLabel.style.margin = '0px';
+            clientNameLabel.style.fontSize = '16px';
+            clientModule.appendChild(clientNameLabel);
+
+            let idClient = document.createElement('input');
+            idClient.type = 'hidden';
+            idClient.name = 'selectedClients';
+            idClient.value = clientId;
+            clientModule.appendChild(idClient);
+
+            let deleteButton = document.createElement('button');
+            deleteButton.classList.add('button');
+            deleteButton.classList.add('modal-button');
+            deleteButton.type = 'button';
+            deleteButton.innerHTML = '&times;';
+            deleteButton.style.border = 'none';
+            deleteButton.onclick = function () {
+                clientModule.remove();
+            };
+            clientModule.appendChild(deleteButton);
+
+            document.getElementById('clientsFilterContainer').appendChild(clientModule);
+        }
+    }
+
+    document.getElementById('filter-client-group').addEventListener('change', function() {
+        if(this.options[this.selectedIndex].value === '') return;
+        let clientId = this.options[this.selectedIndex].value;
+        let clientName = this.options[this.selectedIndex].textContent;
+        addClientModule(clientId, clientName);
+    });
+</script>
+
+
+
+
 <%@include file="/WEB-INF/views/footer.jsp"%>

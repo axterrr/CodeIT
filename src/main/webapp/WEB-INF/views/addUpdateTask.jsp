@@ -37,8 +37,7 @@
             <c:if test="${empty requestScope.taskDto.getId()}">
                 <div class="input-container">
                     <label class="input-label" for="project-input">Project</label>
-                    <select class="input-select" id="project-input" name="projectId">
-                        <option value=""></option>
+                    <select class="add-form-input form-select" id="project-input" name="projectId">
                         <c:forEach items="${projects}" var="project">
                             <option value=${project.getId()} <c:if test="${requestScope.taskDto.getProjectId() == project.getId()}">selected</c:if>>${project.getName()}</option>
                         </c:forEach>
@@ -47,7 +46,7 @@
             </c:if>
             <div class="input-container">
                 <label class="input-label" for="developer-input">Developer</label>
-                <select class="input-select" id="developer-input" name="developerId">
+                <select class="add-form-input form-select" id="developer-input" name="developerId">
                     <option value=""></option>
                     <c:forEach items="${developers}" var="developer">
                         <option value=${developer.getId()} <c:if test="${requestScope.taskDto.getDeveloperId() == developer.getId()}">selected</c:if>>${developer.getFirstName()} ${developer.getLastName()}</option>
@@ -56,7 +55,7 @@
             </div>
             <div class="input-container">
                 <label class="input-label" for="tester-input">Tester</label>
-                <select class="input-select" id="tester-input" name="testerId">
+                <select class="add-form-input form-select" id="tester-input" name="testerId">
                     <option value=""></option>
                     <c:forEach items="${testers}" var="tester">
                         <option value=${tester.getId()} <c:if test="${requestScope.taskDto.getTesterId() == tester.getId()}">selected</c:if>>${tester.getFirstName()} ${tester.getLastName()}</option>
@@ -65,8 +64,7 @@
             </div>
             <div class="input-container">
                 <label class="input-label" for="description-input">Description</label>
-                <input type="text" class="add-form-input" placeholder="Order Description" id="description-input" name="description"
-                       value="<c:out value="${requestScope.taskDto.getDescription()}" />"/>
+                <textarea class="add-form-input" placeholder="Task Description" id="description-input" name="description"><c:out value="${requestScope.taskDto.getDescription()}"/></textarea>
             </div>
             <div class="input-container">
                 <label class="input-label" for="link-input">Task Link</label>

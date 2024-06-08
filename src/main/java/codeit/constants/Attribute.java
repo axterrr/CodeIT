@@ -54,4 +54,15 @@ public class Attribute {
     public static final String MANAGERS = "managers";
     public static final String DEVELOPERS = "developers";
     public static final String TESTERS = "testers";
+    public static final String ROLES = "roles";
+    public static final String STATUSES = "statuses";
+    public static final String SELECTED_CLIENTS = "selectedClients";
+    public static final String SELECTED_PROJECTS = "selectedProjects";
+    public static final String SELECTED_MANAGERS = "selectedManagers";
+    public static final String SELECTED_DEVELOPERS = "selectedDevelopers";
+    public static final String SELECTED_TESTERS = "selectedTesters";
+    public static final String START_DATE_FROM = "startDateFrom";
+    public static final String START_DATE_TO = "startDateTo";
+    public static final String DUE_DATE_FROM = "dueDateFrom";
+    public static final String DUE_DATE_TO = "dueDateTo";
 }

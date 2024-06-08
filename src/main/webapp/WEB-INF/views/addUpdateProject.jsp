@@ -56,8 +56,7 @@
             </div>
             <div class="input-container">
                 <label class="input-label" for="description-input">Description</label>
-                <input type="text" class="add-form-input" placeholder="Project Description" id="description-input" name="description"
-                       value="<c:out value="${requestScope.projectDto.getDescription()}" />"/>
+                <textarea class="add-form-input" placeholder="Project Description" id="description-input" name="description"><c:out value="${requestScope.projectDto.getDescription()}"/></textarea>
             </div>
             <div class="input-container">
                 <label class="input-label" for="link-input">Project Link</label>

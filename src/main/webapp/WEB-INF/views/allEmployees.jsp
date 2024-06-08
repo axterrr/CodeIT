@@ -1,16 +1,28 @@
 <%@include file="/WEB-INF/views/header.jsp"%>
 <div class="container all-container employees-view-container">
+    <div id="forSideMenu"></div>
     <div id="sideMenu" class="menu side-menu">
         <a href="#" class="button close-button" onclick="closeMenu()">&times;</a>
-        <form class="filter-form" action="${pageContext.request.contextPath}/controller/employees/role"
-              method="POST" role="form">
+        <form class="filter-form" action="${pageContext.request.contextPath}/controller/employees" method="GET" role="form">
             <div class="form-group">
                 <div class="filter-container">
                     <label for="filter-role-group" class="filter-label">Role</label>
                     <div class="checkbox-group" id="filter-role-group">
-                        <label class="checkbox-label"><input type="checkbox" name="role" value="projectManager">Project Manager</label>
-                        <label class="checkbox-label"><input type="checkbox" name="role" value="developer">Developer</label>
-                        <label class="checkbox-label"><input type="checkbox" name="role" value="tester">Tester</label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="roles" value="Project Manager"
+                                   <c:if test="${requestScope.roles.contains('Project Manager')}">checked</c:if>/>
+                            Project Manager
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="roles" value="Developer"
+                                   <c:if test="${requestScope.roles.contains('Developer')}">checked</c:if>/>
+                            Developer
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="roles" value="Tester"
+                                   <c:if test="${requestScope.roles.contains('Tester')}">checked</c:if>/>
+                            Tester
+                        </label>
                     </div>
                 </div>
             </div>
@@ -62,7 +74,7 @@
     </c:if>
     <div class="cards-container employees-container">
         <c:forEach items="${employees}" var="employee">
-            <div class="card employee-card">
+            <div class="card employee-card" onclick="location.href='${pageContext.request.contextPath}/controller/employees/employee?employeeId=${employee.getId()}';">
                 <div class="card-name-container">
                     <span class="card-name">Employee Name :
                         <span class="card-name card-name-value">${employee.getFirstName()} ${employee.getLastName()}</span>
@@ -89,8 +101,8 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="location.href='${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}';">Delete Employee</button>
-                    <button class="button card-button" onclick="location.href='${pageContext.request.contextPath}/controller/employees/update?employeeId=${employee.getId()}';">Edit Employee</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}';">Delete Employee</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/update?employeeId=${employee.getId()}';">Edit Employee</button>
                 </div>
             </div>
         </c:forEach>

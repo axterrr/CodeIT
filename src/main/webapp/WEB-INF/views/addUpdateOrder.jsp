@@ -17,8 +17,7 @@
             </div>
             <div class="input-container">
                 <label class="input-label" for="description-input">Description</label>
-                <input type="text" class="add-form-input" placeholder="Order Description" id="description-input" name="description"
-                       value="<c:out value="${requestScope.orderDto.getDescription()}" />"/>
+                <textarea class="add-form-input" placeholder="Order Description" id="description-input" name="description"><c:out value="${requestScope.orderDto.getDescription()}"/></textarea>
             </div>
             <div class="input-container">
                 <label class="input-label" for="cost-input">Cost</label>

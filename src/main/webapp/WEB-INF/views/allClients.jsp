@@ -40,7 +40,7 @@
     </c:if>
     <div class="cards-container clients-container">
         <c:forEach items="${clients}" var="client">
-            <div class="card client-card">
+            <div class="card client-card" onclick="location.href='${pageContext.request.contextPath}/controller/clients/client?clientId=${client.getId()}';">
                 <div class="card-name-container">
                     <span class="card-name">Client Name :
                         <span class="card-name card-name-value">${client.getName()}</span>
@@ -62,8 +62,8 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="location.href='${pageContext.request.contextPath}/controller/clients/delete?clientId=${client.getId()}';">Delete Client</button>
-                    <button class="button card-button" onclick="location.href='${pageContext.request.contextPath}/controller/clients/update?clientId=${client.getId()}';">Edit Client</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/clients/delete?clientId=${client.getId()}';">Delete Client</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/clients/update?clientId=${client.getId()}';">Edit Client</button>
                 </div>
             </div>
         </c:forEach>
