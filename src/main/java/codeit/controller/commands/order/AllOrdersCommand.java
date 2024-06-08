@@ -20,6 +20,14 @@ public class AllOrdersCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         List<Order> orders = OrderService.getInstance().getAllOrders();
 
+        String searchName = request.getParameter(Attribute.NAME);
+        if (searchName != null && !searchName.isEmpty()) {
+            orders = orders.stream()
+                    .filter(order -> order.getName().toLowerCase().contains(searchName.toLowerCase()))
+                    .toList();
+            request.setAttribute(Attribute.NAME, searchName);
+        }
+
         String[] statuses = request.getParameterValues(Attribute.STATUSES);
         List<String> statusesList = (statuses == null) ? new ArrayList<>() : List.of(statuses);
         if (!statusesList.isEmpty()) {

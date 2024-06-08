@@ -18,6 +18,17 @@ public class AllEmployeesCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         List<Employee> employees = EmployeeService.getInstance().getAllEmployees();
 
+        String searchName = request.getParameter(Attribute.NAME);
+        if (searchName != null && !searchName.isEmpty()) {
+            employees = employees.stream()
+                    .filter(employee -> {
+                        String emplName = employee.getFirstName().toLowerCase() + ' ' + employee.getLastName().toLowerCase();
+                        return emplName.contains(searchName.toLowerCase());
+                    })
+                    .toList();
+            request.setAttribute(Attribute.NAME, searchName);
+        }
+
         String[] roles = request.getParameterValues(Attribute.ROLES);
         List<String> rolesList = (roles == null) ? new ArrayList<>() : List.of(roles);
         if (!rolesList.isEmpty()) {

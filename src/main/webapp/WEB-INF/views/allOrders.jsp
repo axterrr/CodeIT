@@ -98,10 +98,12 @@
         </form>
     </div>
     <div class="functions-buttons-container">
-        <div class="button-container container-with-button">
-            <input type="text" class="search-input" placeholder="Order Name"/>
-            <button class="button">Search</button>
-        </div>
+        <form class="filter-form" action="${pageContext.request.contextPath}/controller/orders" method="GET" role="form">
+            <div class="button-container container-with-button">
+                <input type="text" class="search-input" placeholder="Order Name" name="name" value="${requestScope.name}"/>
+                <button type="submit" class="button">Search</button>
+            </div>
+        </form>
         <div class="buttons-container">
             <div class="buttons-container">
                 <button id="filter-button" class="button filter-button">Open Filters</button>

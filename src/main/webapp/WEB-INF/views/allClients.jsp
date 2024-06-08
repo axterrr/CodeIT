@@ -1,10 +1,12 @@
 <%@include file="/WEB-INF/views/header.jsp"%>
 <div class="container all-container employees-view-container">
     <div class="functions-buttons-container">
-        <div class="button-container container-with-button">
-            <input type="text" class="search-input" placeholder="Client Name"/>
-            <button class="button">Search</button>
-        </div>
+        <form class="filter-form" action="${pageContext.request.contextPath}/controller/clients" method="GET" role="form">
+            <div class="button-container container-with-button">
+                <input type="text" class="search-input" placeholder="Client Name" name="name" value="${requestScope.name}"/>
+                <button type="submit" class="button">Search</button>
+            </div>
+        </form>
         <div class="buttons-container">
             <div class="buttons-container">
                 <div class="button-container">

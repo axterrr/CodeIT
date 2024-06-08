@@ -20,6 +20,14 @@ public class AllProjectsCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         List<Project> projects = ProjectService.getInstance().getAllProjects();
 
+        String searchName = request.getParameter(Attribute.NAME);
+        if (searchName != null && !searchName.isEmpty()) {
+            projects = projects.stream()
+                    .filter(project -> project.getName().toLowerCase().contains(searchName.toLowerCase()))
+                    .toList();
+            request.setAttribute(Attribute.NAME, searchName);
+        }
+
         String[] statuses = request.getParameterValues(Attribute.STATUSES);
         List<String> statusesList = (statuses == null) ? new ArrayList<>() : List.of(statuses);
         if (!statusesList.isEmpty()) {

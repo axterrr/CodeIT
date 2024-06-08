@@ -20,6 +20,14 @@ public class AllTasksCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         List<Task> tasks = TaskService.getInstance().getAllTasks();
 
+        String searchName = request.getParameter(Attribute.NAME);
+        if (searchName != null && !searchName.isEmpty()) {
+            tasks = tasks.stream()
+                    .filter(task -> task.getName().toLowerCase().contains(searchName.toLowerCase()))
+                    .toList();
+            request.setAttribute(Attribute.NAME, searchName);
+        }
+
         String[] statuses = request.getParameterValues(Attribute.STATUSES);
         List<String> statusesList = (statuses == null) ? new ArrayList<>() : List.of(statuses);
         if (!statusesList.isEmpty()) {
