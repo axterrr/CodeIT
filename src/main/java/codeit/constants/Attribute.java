@@ -65,4 +65,6 @@ public class Attribute {
     public static final String START_DATE_TO = "startDateTo";
     public static final String DUE_DATE_FROM = "dueDateFrom";
     public static final String DUE_DATE_TO = "dueDateTo";
+    public static final String SORT_BY = "sortBy";
+    public static final String DESCENDING = "descending";
 }

@@ -1,8 +1,6 @@
 package codeit.dao;
 
 import codeit.exceptions.ServerException;
-import codeit.models.entities.Employee;
-import codeit.models.entities.Order;
 import codeit.models.entities.Project;
 import codeit.models.enums.ProjectStatus;
 import codeit.services.EmployeeService;
@@ -27,6 +25,18 @@ public class ProjectDao implements AutoCloseable {
     private static String DELETE = "DELETE FROM `project` WHERE project_id=?";
     private static String GET_BY_ORDER = "SELECT * FROM `project` WHERE order_id=?";
     private static String GET_ALL_BY_MANAGER = "SELECT * FROM `project` WHERE manager_id=?";
+    private static String GET_EMPLOYEES_NUMBER =
+            "SELECT COUNT(employee_id) AS result " +
+            "FROM `employee` " +
+            "WHERE employee_id IN (SELECT developer_id " +
+            "                      FROM `task` " +
+            "                      WHERE project_id=?) " +
+            "OR employee_id IN (SELECT tester_id " +
+            "                   FROM `task` " +
+            "                   WHERE project_id=?) " +
+            "OR employee_id IN (SELECT manager_id " +
+            "                   FROM `project` " +
+            "                   WHERE project_id=?) ";
 
     private static String ID = "project_id";
     private static String ORDER_ID = "order_id";
@@ -145,6 +155,19 @@ public class ProjectDao implements AutoCloseable {
             throw new ServerException(e);
         }
         return projects;
+    }
+
+    public Long getEmployeesNumber(String projectId) {
+        try (PreparedStatement query = connection.prepareStatement(GET_EMPLOYEES_NUMBER)) {
+            query.setString(1, projectId);
+            query.setString(2, projectId);
+            query.setString(3, projectId);
+            ResultSet resultSet = query.executeQuery();
+            resultSet.next();
+            return resultSet.getLong("result");
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 
     private static Project extractProjectFromResultSet(ResultSet resultSet) throws SQLException {

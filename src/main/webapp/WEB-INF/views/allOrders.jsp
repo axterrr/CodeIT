@@ -98,7 +98,7 @@
         </form>
     </div>
     <div class="functions-buttons-container">
-        <form class="filter-form" action="${pageContext.request.contextPath}/controller/orders" method="GET" role="form">
+        <form action="${pageContext.request.contextPath}/controller/orders" method="GET" role="form">
             <div class="button-container container-with-button">
                 <input type="text" class="search-input" placeholder="Order Name" name="name" value="${requestScope.name}"/>
                 <button type="submit" class="button">Search</button>
@@ -107,17 +107,20 @@
         <div class="buttons-container">
             <div class="buttons-container">
                 <button id="filter-button" class="button filter-button">Open Filters</button>
-                <div class="button-container">
-                    <label class="sort-label" for="sort-by-list">Sort by</label>
-                    <select id="sort-by-list">
-                        <option value="name">Name</option>
-                        <option value="creationDate">Creation Date</option>
-                        <option value="cost">Cost</option>
-                        <option value="status">Status</option>
-                    </select>
-                    <label class="sort-label" for="sort-checkbox">descending</label>
-                    <input type="checkbox" id="sort-checkbox"/>
-                </div>
+                <form action="${pageContext.request.contextPath}/controller/orders" method="GET" role="form">
+                    <div class="button-container">
+                        <label class="sort-label" for="sort-by-list">Sort by</label>
+                        <select id="sort-by-list" name="sortBy" onchange="this.closest('form').submit();">
+                            <option value="name" <c:if test="${requestScope.sortBy == 'name'}">selected</c:if>>Name</option>
+                            <option value="creationDate" <c:if test="${requestScope.sortBy == 'creationDate'}">selected</c:if>>Creation Date</option>
+                            <option value="cost" <c:if test="${requestScope.sortBy == 'cost'}">selected</c:if>>Cost</option>
+                            <option value="status" <c:if test="${requestScope.sortBy == 'status'}">selected</c:if>>Status</option>
+                        </select>
+                        <label class="sort-label" for="sort-checkbox">descending</label>
+                        <input type="checkbox" id="sort-checkbox" name="descending" onchange="this.closest('form').submit();"
+                               <c:if test="${requestScope.descending == 'on'}" >checked</c:if>/>
+                    </div>
+                </form>
             </div>
             <div class="buttons-container">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/add';">Add new Order</button>

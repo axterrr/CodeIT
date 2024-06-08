@@ -93,7 +93,7 @@
         </form>
     </div>
     <div class="functions-buttons-container">
-        <form class="filter-form" action="${pageContext.request.contextPath}/controller/projects" method="GET" role="form">
+        <form action="${pageContext.request.contextPath}/controller/projects" method="GET" role="form">
             <div class="button-container container-with-button">
                 <input type="text" class="search-input" placeholder="Project Name" name="name" value="${requestScope.name}"/>
                 <button type="submit" class="button">Search</button>
@@ -102,20 +102,23 @@
         <div class="buttons-container">
             <div class="buttons-container">
                 <button id="filter-button" class="button filter-button">Open Filters</button>
-                <div class="button-container">
-                    <label class="sort-label" for="sort-by-list">Sort by</label>
-                    <select id="sort-by-list">
-                        <option value="name">Name</option>
-                        <option value="startDate">Start Date</option>
-                        <option value="dueDate">Due Date</option>
-                        <option value="status">Status</option>
-                        <option value="budget">Budget</option>
-                        <option value="tasksNumber">Tasks Number</option>
-                        <option value="employeesNumber">Employees Number</option>
-                    </select>
-                    <label class="sort-label" for="sort-checkbox">descending</label>
-                    <input type="checkbox" id="sort-checkbox"/>
-                </div>
+                <form action="${pageContext.request.contextPath}/controller/projects" method="GET" role="form">
+                    <div class="button-container">
+                        <label class="sort-label" for="sort-by-list">Sort by</label>
+                        <select id="sort-by-list" name="sortBy" onchange="this.closest('form').submit();">
+                            <option value="name" <c:if test="${requestScope.sortBy == 'name'}">selected</c:if>>Name</option>
+                            <option value="startDate" <c:if test="${requestScope.sortBy == 'startDate'}">selected</c:if>>Start Date</option>
+                            <option value="dueDate" <c:if test="${requestScope.sortBy == 'dueDate'}">selected</c:if>>Due Date</option>
+                            <option value="status" <c:if test="${requestScope.sortBy == 'status'}">selected</c:if>>Status</option>
+                            <option value="budget" <c:if test="${requestScope.sortBy == 'budget'}">selected</c:if>>Budget</option>
+                            <option value="tasksNumber" <c:if test="${requestScope.sortBy == 'tasksNumber'}">selected</c:if>>Tasks Number</option>
+                            <option value="employeesNumber" <c:if test="${requestScope.sortBy == 'employeesNumber'}">selected</c:if>>Employees Number</option>
+                        </select>
+                        <label class="sort-label" for="sort-checkbox">descending</label>
+                        <input type="checkbox" id="sort-checkbox" name="descending" onchange="this.closest('form').submit();"
+                               <c:if test="${requestScope.descending == 'on'}" >checked</c:if>/>
+                    </div>
+                </form>
             </div>
             <div class="buttons-container">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add';">Add new Project</button>

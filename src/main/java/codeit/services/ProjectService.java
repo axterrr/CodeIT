@@ -58,4 +58,10 @@ public class ProjectService {
             return dao.getAllByManager(managerId);
         }
     }
+
+    public Long getEmployeesNumberOnProject(String projectId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            return dao.getEmployeesNumber(projectId);
+        }
+    }
 }
