@@ -34,7 +34,7 @@ public class PostAddEmployeeCommand implements Command {
             }
 
             EmployeeService.getInstance().createEmployee(employeeDto.toEmployee());
-            redirectToAllEmployeesPageWithSuccessMessage(request, response);
+            redirectToEmployeePageWithSuccessMessage(request, response, employeeDto.getId());
             return RedirectionManager.REDIRECTION;
         }
 
@@ -58,12 +58,13 @@ public class PostAddEmployeeCommand implements Command {
                 .build();
     }
 
-    private void redirectToAllEmployeesPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void redirectToEmployeePageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response,
+                                                          String employeeId) throws IOException {
 
         Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.EMPLOYEE_ID, employeeId);
         urlParams.put(Attribute.SUCCESS, "Employee successfully added");
-        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.EMPLOYEES, urlParams);
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.EMPLOYEE, urlParams);
     }
 
     private void addRequestAttributes(HttpServletRequest request, EmployeeDto employeeDto, List<String> errors) {

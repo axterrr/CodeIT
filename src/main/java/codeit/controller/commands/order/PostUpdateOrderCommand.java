@@ -25,7 +25,7 @@ public class PostUpdateOrderCommand implements Command {
 
         if (errors.isEmpty()) {
             OrderService.getInstance().updateOrder(orderDto.toOrder(request));
-            redirectToAllOrdersPageWithSuccessMessage(request, response);
+            redirectToOrderPageWithSuccessMessage(request, response, orderDto.getId());
             return RedirectionManager.REDIRECTION;
         }
 
@@ -45,12 +45,13 @@ public class PostUpdateOrderCommand implements Command {
                 .build();
     }
 
-    private void redirectToAllOrdersPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void redirectToOrderPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response,
+                                                       String orderId) throws IOException {
 
         Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.ORDER_ID, orderId);
         urlParams.put(Attribute.SUCCESS, "Order successfully updated");
-        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.ORDERS, urlParams);
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.ORDER, urlParams);
     }
 
     private void addRequestAttributes(HttpServletRequest request, OrderDto orderDto, List<String> errors) {

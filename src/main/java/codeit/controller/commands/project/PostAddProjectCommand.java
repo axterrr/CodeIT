@@ -28,7 +28,7 @@ public class PostAddProjectCommand implements Command {
         if (errors.isEmpty()) {
             if (ProjectService.getInstance().getProjectByOrder(projectDto.getOrderId()) == null) {
                 ProjectService.getInstance().createProject(projectDto.toProject());
-                redirectToAllProjectsPageWithSuccessMessage(request, response);
+                redirectToProjectPageWithSuccessMessage(request, response, projectDto.getId());
                 return RedirectionManager.REDIRECTION;
             }
             else {
@@ -55,12 +55,13 @@ public class PostAddProjectCommand implements Command {
                 .build();
     }
 
-    private void redirectToAllProjectsPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void redirectToProjectPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response,
+                                                       String projectId) throws IOException {
 
         Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.PROJECT_ID, projectId);
         urlParams.put(Attribute.SUCCESS, "Project successfully added");
-        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.PROJECTS, urlParams);
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.PROJECT, urlParams);
     }
 
     private void addRequestAttributes(HttpServletRequest request, ProjectDto projectDto, List<String> errors) {

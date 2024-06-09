@@ -26,7 +26,7 @@ public class PostUpdateTaskCommand implements Command {
 
         if (errors.isEmpty()) {
             TaskService.getInstance().updateTask(taskDto.toTask());
-            redirectToAllTasksPageWithSuccessMessage(request, response);
+            redirectToTaskPageWithSuccessMessage(request, response, taskDto.getId());
             return RedirectionManager.REDIRECTION;
         }
 
@@ -52,12 +52,13 @@ public class PostUpdateTaskCommand implements Command {
                 .build();
     }
 
-    private void redirectToAllTasksPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void redirectToTaskPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response,
+                                                      String taskId) throws IOException {
 
         Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.TASK_ID, taskId);
         urlParams.put(Attribute.SUCCESS, "Task successfully updated");
-        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASKS, urlParams);
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASK, urlParams);
     }
 
     private void addRequestAttributes(HttpServletRequest request, TaskDto taskDto, List<String> errors) {

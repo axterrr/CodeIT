@@ -35,7 +35,7 @@ public class PostUpdateClientCommand implements Command {
             }
 
             ClientService.getInstance().updateClient(clientDto.toClient());
-            redirectToAllClientsPageWithSuccessMessage(request, response);
+            redirectToClientPageWithSuccessMessage(request, response, clientDto.getId());
             return RedirectionManager.REDIRECTION;
         }
 
@@ -57,12 +57,13 @@ public class PostUpdateClientCommand implements Command {
                 .build();
     }
 
-    private void redirectToAllClientsPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void redirectToClientPageWithSuccessMessage(HttpServletRequest request, HttpServletResponse response,
+                                                        String clientId) throws IOException {
 
         Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.CLIENT_ID, clientId);
         urlParams.put(Attribute.SUCCESS, "Client successfully updated");
-        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.CLIENTS, urlParams);
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.CLIENT, urlParams);
     }
 
     private void addRequestAttributes(HttpServletRequest request, ClientDto clientDto, List<String> errors) {
