@@ -182,7 +182,7 @@ public class Task {
         this.endDate = endDate;
     }
     public String getEndDateString() {
-        return endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return endDate == null ? "" : endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public TaskStatus getStatus() {

@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="employee-buttons-container">
-            <button class="button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}';" >Delete Employee</button>
+            <button class="button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}')" >Delete Employee</button>
             <button class="button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/update?employeeId=${employee.getId()}';">Edit Employee</button>
         </div>
     </div>

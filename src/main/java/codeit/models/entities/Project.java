@@ -176,7 +176,7 @@ public class Project {
     }
 
     public String getEndDateString() {
-        return endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return endDate == null ? "" : endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public ProjectStatus getStatus() {

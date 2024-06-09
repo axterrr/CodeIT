@@ -13,6 +13,14 @@
     <title>CodeIT</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css"/>"/>
     <link rel="icon" href="<c:url value="/resources/image/icon.png" />">
+    <script type="text/javascript">
+        function confirmDeletion(url) {
+            var result = confirm("Are you sure that you want to delete this element?");
+            if (result) {
+                location.href = url;
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="main-menu">

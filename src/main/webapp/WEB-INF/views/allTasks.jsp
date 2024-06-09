@@ -159,8 +159,40 @@
             </div>
             <div class="buttons-container">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/add';">Add new Task</button>
-                <button class="button">Create Report</button>
+                <button class="button" onclick="printTable()">Create Report</button>
             </div>
+            <script>
+                function printTable() {
+                    var iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                    var iframeDoc = iframe.contentWindow.document;
+                    iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;} table {width: 100%; border-collapse: collapse;} th, td {border: 1px solid black; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>');
+                    iframeDoc.write('<h2 align="center">Tasks</h2>');
+
+                    iframeDoc.write('<table>');
+                    iframeDoc.write('<tr><th>Name</th><th>Status</th><th>Project</th><th>Developer</th><th>Tester</th><th>Link</th><th>Start Date</th><th>Due Date</th><th>End Date</th></tr>');
+                    <c:forEach items="${tasks}" var="task">
+                    iframeDoc.write('<tr>');
+                    iframeDoc.write('<td>${task.getName()}</td>');
+                    iframeDoc.write('<td>${task.getStatus().getValue()}</td>');
+                    iframeDoc.write('<td>${task.getProject().getName()}</td>');
+                    iframeDoc.write('<td>${task.getDeveloper().getFirstName()} ${task.getDeveloper().getLastName()}</td>');
+                    iframeDoc.write('<td>${task.getTester().getFirstName()} ${task.getTester().getLastName()}</td>');
+                    iframeDoc.write('<td>${task.getBranchLink()}</td>');
+                    iframeDoc.write('<td>${task.getStartDateString()}</td>');
+                    iframeDoc.write('<td>${task.getDueDateString()}</td>');
+                    iframeDoc.write('<td>${task.getEndDateString()}</td>');
+                    iframeDoc.write('</tr>');
+                    </c:forEach>
+                    iframeDoc.write('</table>');
+
+                    iframeDoc.close();
+                    iframe.onload = function() {
+                        iframe.contentWindow.print();
+                    };
+                }
+            </script>
         </div>
     </div>
     <c:if test="${not empty param.success}">
@@ -217,7 +249,7 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}';">Delete Task</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
                     <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
                 </div>
             </div>

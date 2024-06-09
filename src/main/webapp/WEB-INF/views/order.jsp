@@ -71,7 +71,7 @@
             </div>
             <div class="order-buttons-container ob-part ob-part2">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/cancel?orderId=${order.getId()}';">Cancel Order</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}';">Delete Order</button>
+                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}')">Delete Order</button>
             </div>
         </div>
     </div>

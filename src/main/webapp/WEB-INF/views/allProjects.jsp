@@ -121,7 +121,7 @@
             </div>
             <div class="buttons-container">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add';">Add new Project</button>
-                <button class="button">Create Report</button>
+                <button class="button" onclick="printTable()">Create Report</button>
             </div>
         </div>
     </div>
@@ -169,11 +169,42 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}';">Delete Project</button>
+                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
                     <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
                 </div>
             </div>
         </c:forEach>
     </div>
 </div>
+<script>
+    function printTable() {
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        var iframeDoc = iframe.contentWindow.document;
+        iframeDoc.write('<style>body {padding-top: 50px; padding-bottom: 50px; justify-content: stretch;} table {width: 100%; border-collapse: collapse;} th, td {border: 1px solid black; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>');
+        iframeDoc.write('<h2 align="center">Projects</h2>');
+
+        iframeDoc.write('<table>');
+        iframeDoc.write('<tr><th>Name</th><th>Status</th><th>Manager</th><th>Link</th><th>Budget</th><th>Start Date</th><th>Due Date</th><th>End Date</th></tr>');
+        <c:forEach items="${projects}" var="project">
+        iframeDoc.write('<tr>');
+        iframeDoc.write('<td>${project.getName()}</td>');
+        iframeDoc.write('<td>${project.getStatus().getValue()}</td>');
+        iframeDoc.write('<td>${project.getManager().getFirstName()} ${project.getManager().getLastName()}</td>');
+        iframeDoc.write('<td>${project.getGitHubLink()}</td>');
+        iframeDoc.write('<td>${project.getBudget()}</td>');
+        iframeDoc.write('<td>${project.getStartDateString()}</td>');
+        iframeDoc.write('<td>${project.getDueDateString()}</td>');
+        iframeDoc.write('<td>${project.getEndDateString()}</td>');
+        iframeDoc.write('</tr>');
+        </c:forEach>
+        iframeDoc.write('</table>');
+
+        iframeDoc.close();
+        iframe.onload = function() {
+            iframe.contentWindow.print();
+        };
+    }
+</script>
 <%@include file="/WEB-INF/views/footer.jsp"%>

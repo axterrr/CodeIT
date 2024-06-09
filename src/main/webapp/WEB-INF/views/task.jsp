@@ -100,7 +100,7 @@
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/reject?taskId=${task.getId()}';">Reject Task</button>
             </div>
             <div class="task-buttons-container tb-part tb-part2">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}';">Delete Task</button>
+                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
             </div>
         </div>

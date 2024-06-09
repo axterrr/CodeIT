@@ -98,7 +98,7 @@
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/reject?projectId=${project.getId()}';">Reject Project</button>
             </div>
             <div class="project-buttons-container pb-part pb-part2">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}';">Delete Project</button>
+                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
             </div>
         </div>

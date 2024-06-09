@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="client-buttons-container">
-            <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/clients/delete?clientId=${client.getId()}';" >Delete Client</button>
+            <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/clients/delete?clientId=${client.getId()}')">Delete Client</button>
             <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/clients/update?clientId=${client.getId()}';">Edit Client</button>
         </div>
     </div>
