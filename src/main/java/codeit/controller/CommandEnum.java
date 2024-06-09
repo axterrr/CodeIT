@@ -40,6 +40,9 @@ public enum CommandEnum {
     GET_UPDATE_ORDER ("GET:/orders/update", new GetUpdateOrderCommand()),
     POST_UPDATE_ORDER ("POST:/orders/update", new PostUpdateOrderCommand()),
     DELETE_ORDER ("GET:/orders/delete", new DeleteOrderCommand()),
+    ACCEPT_ORDER ("GET:/orders/accept", new AcceptOrderCommand()),
+    REJECT_ORDER ("GET:/orders/reject", new RejectOrderCommand()),
+    CANCEL_ORDER ("GET:/orders/cancel", new CancelOrderCommand()),
 
     ALL_PROJECTS ("GET:/projects", new AllProjectsCommand()),
     PROJECT ("GET:/projects/project", new ProjectCommand()),
@@ -48,6 +51,9 @@ public enum CommandEnum {
     GET_UPDATE_PROJECT ("GET:/projects/update", new GetUpdateProjectCommand()),
     POST_UPDATE_PROJECT ("POST:/projects/update", new PostUpdateProjectCommand()),
     DELETE_PROJECT ("GET:/projects/delete", new DeleteProjectCommand()),
+    CONFIRM_PROJECT ("GET:/projects/confirm", new ConfirmProjectCommand()),
+    REJECT_PROJECT ("GET:/projects/reject", new RejectProjectCommand()),
+    SUBMIT_PROJECT ("GET:/projects/submit", new SubmitProjectCommand()),
 
     ALL_TASKS ("GET:/tasks", new AllTasksCommand()),
     TASK ("GET:/tasks/task", new TaskCommand()),
@@ -55,7 +61,11 @@ public enum CommandEnum {
     POST_ADD_TASK ("POST:/tasks/add", new PostAddTaskCommand()),
     GET_UPDATE_TASK ("GET:/tasks/update", new GetUpdateTaskCommand()),
     POST_UPDATE_TASK ("POST:/tasks/update", new PostUpdateTaskCommand()),
-    DELETE_TASK ("GET:/tasks/delete", new DeleteTaskCommand());
+    DELETE_TASK ("GET:/tasks/delete", new DeleteTaskCommand()),
+    SUBMIT_TASK ("GET:/tasks/submit", new SubmitTaskCommand()),
+    CONFIRM_TASK ("GET:/tasks/confirm", new ConfirmTaskCommand()),
+    CONFIRM_TASK_TEST("GET:/tasks/confirmTest", new ConfirmTaskTestCommand()),
+    REJECTS_TASK ("GET:/tasks/reject", new RejectTaskCommand());
 
     private String key;
     private Command command;

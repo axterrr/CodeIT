@@ -37,6 +37,7 @@ public class ProjectDao implements AutoCloseable {
             "OR employee_id IN (SELECT manager_id " +
             "                   FROM `project` " +
             "                   WHERE project_id=?) ";
+    private static String CHANGE_STATUS = "UPDATE `project` SET status=? WHERE project_id=?";
 
     private static String ID = "project_id";
     private static String ORDER_ID = "order_id";
@@ -165,6 +166,16 @@ public class ProjectDao implements AutoCloseable {
             ResultSet resultSet = query.executeQuery();
             resultSet.next();
             return resultSet.getLong("result");
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public void changeStatus(String status, String id) {
+        try (PreparedStatement query = connection.prepareStatement(CHANGE_STATUS)) {
+            query.setString(1, status);
+            query.setString(2, id);
+            query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);
         }

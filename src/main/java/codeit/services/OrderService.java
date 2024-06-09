@@ -3,6 +3,7 @@ package codeit.services;
 import codeit.dao.OrderDao;
 import codeit.dao.DaoFactory;
 import codeit.models.entities.Order;
+import codeit.models.enums.OrderStatus;
 
 import java.util.List;
 
@@ -56,6 +57,24 @@ public class OrderService {
     public List<Order> getAllOrdersByClient(String clientId) {
         try (OrderDao dao = daoFactory.createOrderDao()) {
             return dao.getAllByClient(clientId);
+        }
+    }
+
+    public void cancelOrder(String orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.changeStatus(OrderStatus.CANCELLED.getValue(), orderId);
+        }
+    }
+
+    public void acceptOrder(String orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.changeStatus(OrderStatus.ACCEPTED.getValue(), orderId);
+        }
+    }
+
+    public void rejectOrder(String orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.changeStatus(OrderStatus.REJECTED.getValue(), orderId);
         }
     }
 }

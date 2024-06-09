@@ -38,10 +38,18 @@
                 <div class="input-container">
                     <label class="input-label" for="order-input">Order</label>
                     <select class="add-form-input form-select" id="order-input" name="orderId">
-                        <option value=""></option>
-                        <c:forEach items="${orders}" var="order">
-                            <option value=${order.getId()} <c:if test="${requestScope.projectDto.getOrderId() == order.getId()}">selected</c:if>>${order.getName()}</option>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${not empty requestScope.orderId}">
+                                <c:forEach items="${orders}" var="order">
+                                    <option value=${order.getId()} <c:if test="${requestScope.orderId == order.getId()}">selected</c:if>>${order.getName()}</option>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${orders}" var="order">
+                                    <option value=${order.getId()} <c:if test="${requestScope.projectDto.getOrderId() == order.getId()}">selected</c:if>>${order.getName()}</option>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </select>
                 </div>
             </c:if>

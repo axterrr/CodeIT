@@ -78,7 +78,7 @@ public class AllTasksCommand implements Command {
         List<String> developersList = (developers == null) ? new ArrayList<>() : List.of(developers);
         if (!developersList.isEmpty()) {
             tasks = tasks.stream()
-                    .filter(task -> developersList.contains(task.getDeveloper().getId()))
+                    .filter(task -> task.getDeveloper()!=null && developersList.contains(task.getDeveloper().getId()))
                     .toList();
             request.setAttribute(Attribute.SELECTED_DEVELOPERS, developersList.stream()
                     .map(developerId -> EmployeeService.getInstance().getEmployeeById(developerId))
@@ -92,7 +92,7 @@ public class AllTasksCommand implements Command {
         List<String> testersList = (testers == null) ? new ArrayList<>() : List.of(testers);
         if (!testersList.isEmpty()) {
             tasks = tasks.stream()
-                    .filter(task -> testersList.contains(task.getTester().getId()))
+                    .filter(task -> task.getTester()!= null && testersList.contains(task.getTester().getId()))
                     .toList();
             request.setAttribute(Attribute.SELECTED_TESTERS, testersList.stream()
                     .map(testerId -> EmployeeService.getInstance().getEmployeeById(testerId))

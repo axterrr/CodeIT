@@ -27,7 +27,7 @@ input[type="checkbox"]:checked {
     accent-color: #45a049;
 }
 
-.page-button, .login-button {
+.page-button, .login-button, #logged-in-label {
     font-size: 20px;
 }
 
@@ -48,9 +48,18 @@ footer {
     border-top: 1px solid #2F0D2C;
     color: #2F0D2C;
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     justify-content: center;
     align-items: center;
+    text-align: center;
     z-index: 50;
+}
+
+footer p {
+    margin: 0;
+    font-size: 16px;
+    color: #2F0D2C;
 }
 
 select {
@@ -148,7 +157,7 @@ select {
     height: auto;
     width: 100%;
     box-sizing: border-box;
-    padding-left: 65px;
+    padding-left: 15px;
     padding-right: 65px;
     align-content: center;
     background-color: #ecdaff;
@@ -157,7 +166,10 @@ select {
     top: 0;
     overflow: hidden;
     z-index: 1000;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .navbar {
@@ -174,7 +186,7 @@ select {
     align-items: center;
 }
 
-.navbar-login {
+.navbar-login, #logged-in-label {
     text-align: center;
     align-content: center;
 }
@@ -302,8 +314,7 @@ select {
     font-size: 23px;
 }
 
-#clientsFilterContainer, #managersFilterContainer, #projectsFilterContainer, #developersFilterContainer,
-#testersFilterContainer {
+#clientsFilterContainer, #managersFilterContainer, #projectsFilterContainer, #developersFilterContainer, #testersFilterContainer {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -311,15 +322,23 @@ select {
 
 .client-module, .manager-module, .project-module, .developer-module, .tester-module {
     width: 100%;
+    height: fit-content;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 0 5px;
     border: 1px solid;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size: 16px;
 }
 
-.modal-button {
+.module-label {
+    margin: 0;
+}
+
+.module-button {
+    border: none;
     font-size: 18px;
     color: #2F0D2C;
     min-height: 20px;
@@ -401,7 +420,7 @@ select {
     width: 100%;
 }
 
-.card-manager, .card-developer, .card-tester {
+.card-manager, .card-developer, .card-tester, .card-client {
     font-size: 17px;
 }
 
@@ -547,6 +566,10 @@ h1 {
     position: relative;
 }
 
+.full-info-order-container {
+    grid-template-columns: 70% 30%;
+}
+
 .full-container {
     position: relative;
     display: flex;
@@ -555,10 +578,11 @@ h1 {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #cebedc transparent;
-    margin-right: 20px;
+    padding-right: 10px;
+    margin-right: 10px;
 }
 
-.full-info-project-container {
+.full-info-container {
     flex: 1;
     overflow-y: auto;
     box-sizing: border-box;
@@ -580,7 +604,7 @@ h1 {
     overflow: hidden;
 }
 
-.project-tasks-container, .client-orders-container {
+.project-tasks-container, .client-orders-container, .employee-tasks-container {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -596,11 +620,11 @@ h1 {
     */
 }
 
-.project-tasks-list, .client-orders-list {
+.project-tasks-list, .client-orders-list, .employee-tasks-list {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    overflow-y: auto;
+    overflow: auto;
     min-height: 200px;
     border: 1px solid #2F0D2C;
     border-radius: 5px;
@@ -609,11 +633,21 @@ h1 {
     padding: 10px;
 }
 
-.project-buttons-container, .client-buttons-container {
+.project-buttons-container, .client-buttons-container, .order-buttons-container, .task-buttons-container, .employee-buttons-container {
     margin-top: 30px;
     display: flex;
     gap: 20px;
     justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.order-buttons-container {
+    flex-direction: column;
+    justify-content: end;
+}
+
+.order-buttons-container2, .order-buttons-container1 {
+    flex-direction: row;
 }
 
 .full-project-label, .full-client-label {
@@ -654,6 +688,9 @@ h1 {
     border-radius: 5px;
     padding: 20px;
     margin-right: 20px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cebedc transparent;
 }
 
 .project-link-container {
@@ -673,11 +710,11 @@ h1 {
 }
 
 
-.full-project-info-label {
+.full-project-info-label, .full-client-info-label, .full-order-info-label, .full-task-info-label {
     font-size: 0.95em;
 }
 
-a .full-project-label {
+.a-label {
     color: #d300cf;
     text-decoration: underline;
     text-decoration-color: #d300cf;
@@ -689,19 +726,15 @@ a .full-project-label {
     gap: 5px;
 }
 
-.project-status-icon {
+.project-status-icon, .order-status-icon, .task-status-icon {
     position: absolute;
-    right: 10px;
+    right: 20px;
     height: 25px;
     width: 25px;
     background-color: #2F0D2C;
 }
 
-.project-tasks {
-    font-size: 24px;
-}
-
-.project-task-container {
+.project-task-container, .client-order-container, .employee-task-container {
     display: flex;
     justify-content: space-between;
     font-size: 20px;
@@ -729,6 +762,9 @@ a .full-project-label {
     border-radius: 5px;
     padding: 20px;
     margin-right: 20px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cebedc transparent;
 }
 
 .client-email-container, .client-phone-container, .client-address-container {
@@ -743,6 +779,184 @@ a .full-project-label {
     font-size: 19px;
     margin-bottom: 5px;
 }
+
+.order-name-container {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.order-status-container {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.order-project-container, .order-client-container {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.order-description-container {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.order-description-value {
+    border: 1px solid #2F0D2C;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 20px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cebedc transparent;
+}
+
+.order-cost-container {
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.order-dates-container {
+    font-size: 19px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.order-date-container {
+    font-size: 19px;
+}
+
+.task-name-container {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.task-status-container {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.task-project-container, .task-developer-container, .task-tester-container {
+    font-size: 22px;
+}
+
+.task-project-container, .task-tester-container {
+    margin-bottom: 5px;
+}
+
+.task-description-container {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.task-description-value {
+    border: 1px solid #2F0D2C;
+    border-radius: 5px;
+    padding: 20px;
+    margin-right: 20px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cebedc transparent;
+}
+
+.task-description-container, .task-link-container {
+    font-size: 20px;
+}
+
+.task-link-container {
+    margin-bottom: 5px;
+}
+
+.task-dates-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 19px;
+}
+
+.task-comment-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.task-comment-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-size: 19px;
+}
+
+.task-comment-value-container {
+    overflow-y: auto;
+    min-height: 200px;
+    border: 1px solid #2F0D2C;
+    border-radius: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #cebedc transparent;
+    padding: 10px;
+}
+
+.task-comment-value {
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Calibri, sans-serif;
+    font-size: 20px;
+}
+
+.comment-buttons-container {
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+}
+
+.employee-name-container {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.employee-role-container, .employee-specialisation-container {
+    font-size: 22px;
+}
+
+.employee-specialisation-container {
+    margin-bottom: 5px;
+}
+
+.employee-email-container, .employee-phone-container, .employee-address-container {
+    font-size: 20px;
+}
+
+.employee-address-container {
+    margin-bottom: 5px;
+}
+
+.employee-hire-date-container, .employee-birth-date-container {
+    font-size: 19px;
+}
+
+.employee-hire-date-container {
+    margin-bottom: 5px;
+}
+
+.employee-tasks-header, .project-tasks-header, .client-orders-header  {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-size: 19px;
+}
+
 
 .row-fluid {
     padding: 0 100px;
@@ -768,20 +982,60 @@ a .full-project-label {
 }
 
 #forSideMenu {
-    width: calc(100% - 300px);
+    width: 0;
+    box-sizing: border-box;
     height: calc(100% - 160px);
     background-color: #190818;
     opacity: 0;
     transition: opacity 0.5s;
     position: absolute;
-    left: 300px;
-    display: block;
-    z-index: 40;
+    z-index: 5;
+}
+
+.main-view-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 2%;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    height: 50%;
+}
+
+.main-label {
+    font-size: 50px;
+    color: #2F0D2C;
+    flex-wrap: wrap;
+    white-space: normal;
+}
+
+.main-image {
+    height: 100%;
+}
+
+.main-menu-icon {
+    height: 40px;
 }
 
 @media (max-width: 1200px) {
     .cards-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    #logged-in-label {
+        display: none;
     }
 }
 
@@ -789,13 +1043,19 @@ a .full-project-label {
     .cards-container {
         grid-template-columns: repeat(1, 1fr);
     }
+
+    .main-menu-icon {
+        display: none;
+    }
 }
+
 
 @media (max-width: 700px) {
     body {
         width: 700px;
     }
 }
+
 @media (max-height: 600px) {
     body {
         height: 600px;

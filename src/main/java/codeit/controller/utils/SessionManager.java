@@ -17,24 +17,24 @@ public class SessionManager {
     }
 
     public boolean isUserLoggedIn(HttpSession session) {
-        return session.getAttribute(Attribute.EMPLOYEE) != null
-                || session.getAttribute(Attribute.CLIENT) != null;
+        return session.getAttribute(Attribute.LOGGED_EMPLOYEE) != null
+                || session.getAttribute(Attribute.LOGGED_CLIENT) != null;
     }
 
     public void addEmployeeToSession(HttpSession session, Employee user) {
-        session.setAttribute(Attribute.EMPLOYEE, user);
+        session.setAttribute(Attribute.LOGGED_EMPLOYEE, user);
     }
 
     public void addClientToSession(HttpSession session, Client user) {
-        session.setAttribute(Attribute.CLIENT, user);
+        session.setAttribute(Attribute.LOGGED_CLIENT, user);
     }
 
     public Employee getEmployeeFromSession(HttpSession session) {
-        return (Employee) session.getAttribute(Attribute.EMPLOYEE);
+        return (Employee) session.getAttribute(Attribute.LOGGED_EMPLOYEE);
     }
 
     public Client getClientFromSession(HttpSession session) {
-        return (Client) session.getAttribute(Attribute.CLIENT);
+        return (Client) session.getAttribute(Attribute.LOGGED_CLIENT);
     }
 
     public void invalidateSession(HttpSession session) {

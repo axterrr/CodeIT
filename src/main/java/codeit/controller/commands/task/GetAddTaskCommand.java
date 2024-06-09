@@ -4,7 +4,6 @@ import codeit.constants.Attribute;
 import codeit.constants.Page;
 import codeit.controller.commands.Command;
 import codeit.services.EmployeeService;
-import codeit.services.OrderService;
 import codeit.services.ProjectService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,9 @@ public class GetAddTaskCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String projectId = request.getParameter(Attribute.PROJECT_ID);
+        if (projectId != null)
+            request.setAttribute(Attribute.PROJECT_ID, projectId);
         request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllProjects());
         request.setAttribute(Attribute.DEVELOPERS, EmployeeService.getInstance().getAllDevelopers());
         request.setAttribute(Attribute.TESTERS, EmployeeService.getInstance().getAllTesters());

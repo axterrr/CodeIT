@@ -4,7 +4,7 @@ import java.util.List;
 
 public class OptionalContactPersonValidator extends AbstractFieldValidatorHandler{
 
-    private static final String CONTACT_REGEX = "^[A-Za-z0-9,.;:'\\-\\s]*$";
+    private static final String CONTACT_REGEX = "^[A-Za-z0-9,.;+%@$():'\\-\\s]*$";
 
     OptionalContactPersonValidator(FieldValidatorKey fieldValidatorKey) {
         super(fieldValidatorKey);

@@ -37,7 +37,7 @@
                 </div>
                 <div class="filter-container">
                     <label for="filter-manager-group" class="filter-label">Project Manager</label>
-                    <select class="filter-select" id="filter-manager-group">
+                    <select class="filter-select filter-multiple-select" id="filter-manager-group">
                         <option></option>
                         <c:forEach items="${managers}" var="manager">
                             <option value=${manager.getId()}>${manager.getFirstName()} ${manager.getLastName()}</option>
@@ -45,11 +45,10 @@
                     </select>
                     <div id="managersFilterContainer">
                         <c:forEach items="${selectedManagers}" var="manager">
-                            <div class="client-module" id="mm${manager.getId()}" style="width: 100%; height: fit-content;
-                            display: flex; justify-content: space-between; align-items: center;">
-                                <p style="margin: 0; font-size: 16px;">${manager.getFirstName()} ${manager.getLastName()}</p>
+                            <div class="client-module" id="${manager.getId()}">
+                                <p class="module-label">${manager.getFirstName()} ${manager.getLastName()}</p>
                                 <input type="hidden" name="selectedManagers" value="${manager.getId()}">
-                                <button class="button modal-button" type="button" style="border: none;">&times;</button>
+                                <button class="button module-button" type="button">&times;</button>
                             </div>
                         </c:forEach>
                     </div>
@@ -177,55 +176,4 @@
         </c:forEach>
     </div>
 </div>
-
-<script>
-    function addManagerModule(managerId, managerName) {
-        let managerModule = document.getElementById('mm'+managerId);
-        if(!managerModule)
-        {
-            let managerModule = document.createElement('div');
-            managerModule.className = 'manager-module';
-            managerModule.id = 'mm'+managerId;
-            managerModule.style.width = '100%';
-            managerModule.style.height = 'fit-content';
-            managerModule.style.display = 'flex';
-            managerModule.style.justifyContent = 'space-between';
-            managerModule.style.alignItems = 'center';
-            managerModule.style.paddingLeft = '10px 25px';
-
-            let managerNameLabel = document.createElement('p');
-            managerNameLabel.textContent = managerName;
-            managerNameLabel.style.margin = '0px';
-            managerNameLabel.style.fontSize = '16px';
-            managerModule.appendChild(managerNameLabel);
-
-            let idManager = document.createElement('input');
-            idManager.type = 'hidden';
-            idManager.name = 'selectedManagers';
-            idManager.value = managerId;
-            managerModule.appendChild(idManager);
-
-            let deleteButton = document.createElement('button');
-            deleteButton.classList.add('button');
-            deleteButton.classList.add('modal-button');
-            deleteButton.type = 'button';
-            deleteButton.innerHTML = '&times;';
-            deleteButton.style.border = 'none';
-            deleteButton.onclick = function () {
-                managerModule.remove();
-            };
-            managerModule.appendChild(deleteButton);
-
-            document.getElementById('managersFilterContainer').appendChild(managerModule);
-        }
-    }
-
-    document.getElementById('filter-manager-group').addEventListener('change', function() {
-        if(this.options[this.selectedIndex].value === '') return;
-        let managerId = this.options[this.selectedIndex].value;
-        let managerName = this.options[this.selectedIndex].textContent;
-        addManagerModule(managerId, managerName);
-    });
-</script>
-
 <%@include file="/WEB-INF/views/footer.jsp"%>

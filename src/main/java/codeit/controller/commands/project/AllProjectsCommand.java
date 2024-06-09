@@ -62,7 +62,7 @@ public class AllProjectsCommand implements Command {
         List<String> managersList = (managers == null) ? new ArrayList<>() : List.of(managers);
         if (!managersList.isEmpty()) {
             projects = projects.stream()
-                    .filter(project -> managersList.contains(project.getManager().getId()))
+                    .filter(project -> project.getManager()!=null && managersList.contains(project.getManager().getId()))
                     .toList();
             request.setAttribute(Attribute.SELECTED_MANAGERS, managersList.stream()
                     .map(managerId -> EmployeeService.getInstance().getEmployeeById(managerId))

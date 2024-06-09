@@ -28,6 +28,7 @@ public class OrderDao implements AutoCloseable {
             "WHERE order_id NOT IN (SELECT order_id " +
             "                       FROM project)";
     private static String GET_ALL_BY_CLIENT = "SELECT * FROM `order` WHERE client_id=?";
+    private static String CHANGE_STATUS = "UPDATE `order` SET status=? WHERE order_id=?";
 
     private static String ID = "order_id";
     private static String CLIENT_ID = "client_id";
@@ -135,6 +136,16 @@ public class OrderDao implements AutoCloseable {
             throw new ServerException(e);
         }
         return orders;
+    }
+
+    public void changeStatus(String status, String id) {
+        try (PreparedStatement query = connection.prepareStatement(CHANGE_STATUS)) {
+            query.setString(1, status);
+            query.setString(2, id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 
     private static Order extractOrderFromResultSet(ResultSet resultSet) throws SQLException {

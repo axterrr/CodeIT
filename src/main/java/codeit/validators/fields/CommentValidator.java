@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CommentValidator extends AbstractFieldValidatorHandler{
 
-    private static final String COMMENT_REGEX = "^[A-Za-z0-9,.;:'\\-\\s]*$";
+    private static final String COMMENT_REGEX = "^[A-Za-z0-9,.;+%@$():'\\-\\s]*$";
 
     CommentValidator(FieldValidatorKey fieldValidatorKey) {
         super(fieldValidatorKey);

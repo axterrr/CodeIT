@@ -1,8 +1,11 @@
 package codeit.services;
 
+import codeit.dao.OrderDao;
 import codeit.dao.ProjectDao;
 import codeit.dao.DaoFactory;
 import codeit.models.entities.Project;
+import codeit.models.enums.OrderStatus;
+import codeit.models.enums.ProjectStatus;
 
 import java.util.List;
 
@@ -62,6 +65,24 @@ public class ProjectService {
     public Long getEmployeesNumberOnProject(String projectId) {
         try (ProjectDao dao = daoFactory.createProjectDao()) {
             return dao.getEmployeesNumber(projectId);
+        }
+    }
+
+    public void submitProject(String projectId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            dao.changeStatus(ProjectStatus.AWAITING_CONFIRMATION.getValue(), projectId);
+        }
+    }
+
+    public void rejectProject(String projectId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            dao.changeStatus(ProjectStatus.DEVELOPING.getValue(), projectId);
+        }
+    }
+
+    public void confirmProject(String projectId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            dao.changeStatus(ProjectStatus.FINISHED.getValue(), projectId);
         }
     }
 }

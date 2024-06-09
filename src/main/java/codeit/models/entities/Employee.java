@@ -167,6 +167,9 @@ public class Employee {
     public LocalDateTime getHireDate() {
         return hireDate;
     }
+    public String getHireDateString() {
+        return hireDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 
     public void setHireDate(LocalDateTime hireDate) {
         this.hireDate = hireDate;

@@ -13,9 +13,10 @@
             </div>
         </div>
     </c:if>
-    <div class="container">
-        <h2>
-            Welcome to CodeIT !
-        </h2>
+    <div class="container main-view-container">
+        <div class="container logo-container">
+            <img class="main-image" src="<c:url value="/resources/image/logotext1.png" />" alt="">
+        </div>
+
     </div>
 <%@include file="WEB-INF/views/footer.jsp"%>

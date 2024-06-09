@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DescriptionValidator extends AbstractFieldValidatorHandler{
 
-    private static final String DESCRIPTION_REGEX = "^[A-Za-z0-9,.;:'\\-\\s]*$";
+    private static final String DESCRIPTION_REGEX = "^[A-Za-z0-9,.;+%@$():'\\-\\s]*$";
     DescriptionValidator(FieldValidatorKey fieldValidatorKey) {
         super(fieldValidatorKey);
     }

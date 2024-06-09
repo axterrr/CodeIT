@@ -4,7 +4,7 @@ import java.util.List;
 
 public class NameValidator extends AbstractFieldValidatorHandler{
 
-    private static final String NAME_REGEX = "^[A-Za-z0-9,.;:'\\-\\s]*$";
+    private static final String NAME_REGEX = "^[A-Za-z0-9,.;+%@$():'\\-\\s]*$";
     NameValidator(FieldValidatorKey fieldValidatorKey) {
         super(fieldValidatorKey);
     }

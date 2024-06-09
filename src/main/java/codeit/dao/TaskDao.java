@@ -28,6 +28,7 @@ public class TaskDao implements AutoCloseable {
     private static String GET_ALL_BY_PROJECT = "SELECT * FROM `task` WHERE project_id=?";
     private static String GET_ALL_BY_DEVELOPER = "SELECT * FROM `task` WHERE developer_id=?";
     private static String GET_ALL_BY_TESTER = "SELECT * FROM `task` WHERE tester_id=?";
+    private static String CHANGE_STATUS = "UPDATE `task` SET status=? WHERE task_id=?";
 
     private static String ID = "task_id";
     private static String PROJECT_ID = "project_id";
@@ -162,6 +163,16 @@ public class TaskDao implements AutoCloseable {
             throw new ServerException(e);
         }
         return tasks;
+    }
+
+    public void changeStatus(String status, String id) {
+        try (PreparedStatement query = connection.prepareStatement(CHANGE_STATUS)) {
+            query.setString(1, status);
+            query.setString(2, id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
     }
 
     private static Task extractTaskFromResultSet(ResultSet resultSet) throws SQLException {

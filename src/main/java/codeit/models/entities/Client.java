@@ -1,6 +1,7 @@
 package codeit.models.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Client {
     private String id;
@@ -121,6 +122,10 @@ public class Client {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getRegistrationDateString() {
+        return registrationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public String getDescription() {

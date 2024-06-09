@@ -38,9 +38,18 @@
                 <div class="input-container">
                     <label class="input-label" for="project-input">Project</label>
                     <select class="add-form-input form-select" id="project-input" name="projectId">
-                        <c:forEach items="${projects}" var="project">
-                            <option value=${project.getId()} <c:if test="${requestScope.taskDto.getProjectId() == project.getId()}">selected</c:if>>${project.getName()}</option>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${not empty requestScope.projectId}">
+                                <c:forEach items="${projects}" var="project">
+                                    <option value=${project.getId()} <c:if test="${requestScope.projectId == project.getId()}">selected</c:if>>${project.getName()}</option>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${projects}" var="project">
+                                    <option value=${project.getId()} <c:if test="${requestScope.taskDto.getProjectId() == project.getId()}">selected</c:if>>${project.getName()}</option>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </select>
                 </div>
             </c:if>

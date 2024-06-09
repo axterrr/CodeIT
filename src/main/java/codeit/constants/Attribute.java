@@ -6,6 +6,8 @@ public class Attribute {
     public static final String SUCCESS = "success";
     public static final String ERRORS = "errors";
     public static final String LOGIN_USER = "loginUser";
+    public static final String LOGGED_EMPLOYEE = "loggedEmployee";
+    public static final String LOGGED_CLIENT = "loggedClient";
     public static final String EMPLOYEE = "employee";
     public static final String CLIENT = "client";
     public static final String EMAIL = "email";

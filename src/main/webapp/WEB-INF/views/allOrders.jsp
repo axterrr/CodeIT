@@ -42,7 +42,7 @@
                 </div>
                 <div class="filter-container">
                     <label for="filter-client-group" class="filter-label">Client</label>
-                    <select class="filter-select" id="filter-client-group">
+                    <select class="filter-select filter-multiple-select" id="filter-client-group">
                         <option></option>
                         <c:forEach items="${clients}" var="client">
                             <option value="${client.getId()}">${client.getName()}</option>
@@ -50,11 +50,10 @@
                     </select>
                     <div id="clientsFilterContainer">
                         <c:forEach items="${selectedClients}" var="client">
-                            <div class="client-module" id="cm${client.getId()}" style="width: 100%; height: fit-content;
-                            display: flex; justify-content: space-between; align-items: center;">
-                                <p style="margin: 0; font-size: 16px;">${client.getName()}</p>
+                            <div class="client-module" id="${client.getId()}">
+                                <p class="module-label">${client.getName()}</p>
                                 <input type="hidden" name="selectedClients" value="${client.getId()}">
-                                <button class="button modal-button" type="button" style="border: none;">&times;</button>
+                                <button class="button module-button" type="button">&times;</button>
                             </div>
                         </c:forEach>
                     </div>
@@ -158,6 +157,11 @@
                         <span class="card-status card-status-value">${order.getStatus().getValue()}</span>
                     </span>
                 </div>
+                <div class="card-client-container">
+                    <span class="card-client">Client :
+                        <span class="card-client card-client-value">${order.getClient().getName()}</span>
+                    </span>
+                </div>
                 <div class="card-cost-container">
                     <span class="card-cost">Cost :
                         <span class="card-cost card-cost-value">${order.getCost()}</span>
@@ -178,58 +182,4 @@
         </c:forEach>
     </div>
 </div>
-
-<script>
-    function addClientModule(clientId, clientName) {
-        let clientModule = document.getElementById('cm'+clientId);
-        if(!clientModule)
-        {
-            let clientModule = document.createElement('div');
-            clientModule.className = 'client-module';
-            clientModule.id = 'cm'+clientId;
-            clientModule.style.width = '100%';
-            clientModule.style.height = 'fit-content';
-            clientModule.style.display = 'flex';
-            clientModule.style.justifyContent = 'space-between';
-            clientModule.style.alignItems = 'center';
-            clientModule.style.paddingLeft = '10px 25px';
-
-            let clientNameLabel = document.createElement('p');
-            clientNameLabel.textContent = clientName;
-            clientNameLabel.style.margin = '0px';
-            clientNameLabel.style.fontSize = '16px';
-            clientModule.appendChild(clientNameLabel);
-
-            let idClient = document.createElement('input');
-            idClient.type = 'hidden';
-            idClient.name = 'selectedClients';
-            idClient.value = clientId;
-            clientModule.appendChild(idClient);
-
-            let deleteButton = document.createElement('button');
-            deleteButton.classList.add('button');
-            deleteButton.classList.add('modal-button');
-            deleteButton.type = 'button';
-            deleteButton.innerHTML = '&times;';
-            deleteButton.style.border = 'none';
-            deleteButton.onclick = function () {
-                clientModule.remove();
-            };
-            clientModule.appendChild(deleteButton);
-
-            document.getElementById('clientsFilterContainer').appendChild(clientModule);
-        }
-    }
-
-    document.getElementById('filter-client-group').addEventListener('change', function() {
-        if(this.options[this.selectedIndex].value === '') return;
-        let clientId = this.options[this.selectedIndex].value;
-        let clientName = this.options[this.selectedIndex].textContent;
-        addClientModule(clientId, clientName);
-    });
-</script>
-
-
-
-
 <%@include file="/WEB-INF/views/footer.jsp"%>

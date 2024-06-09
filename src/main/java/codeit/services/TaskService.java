@@ -3,6 +3,7 @@ package codeit.services;
 import codeit.dao.TaskDao;
 import codeit.dao.DaoFactory;
 import codeit.models.entities.Task;
+import codeit.models.enums.TaskStatus;
 
 import java.util.List;
 
@@ -62,6 +63,30 @@ public class TaskService {
     public List<Task> getAllTasksByTester(String testerId) {
         try (TaskDao dao = daoFactory.createTaskDao()) {
             return dao.getAllByTester(testerId);
+        }
+    }
+
+    public void submitTask(String taskId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.changeStatus(TaskStatus.TESTING.getValue(), taskId);
+        }
+    }
+
+    public void rejectTask(String taskId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.changeStatus(TaskStatus.DEVELOPING.getValue(), taskId);
+        }
+    }
+
+    public void confirmTaskTest(String taskId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.changeStatus(TaskStatus.AWAITING_CONFIRMATION.getValue(), taskId);
+        }
+    }
+
+    public void confirmTask(String taskId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.changeStatus(TaskStatus.FINISHED.getValue(), taskId);
         }
     }
 }
