@@ -93,7 +93,7 @@
             <div class="task-buttons-container tb-part tb-part1">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/submit?taskId=${task.getId()}';">Submit Task</button>
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirmTest?taskId=${task.getId()}';">Test Passed</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/reject?taskId=${task.getId()}';">Test Failed</button>
+                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/rejectTest?taskId=${task.getId()}';">Test Failed</button>
             </div>
             <div class="task-buttons-container tb-part tb-part3">
                 <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirm?taskId=${task.getId()}';">Confirm Task</button>

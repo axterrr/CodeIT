@@ -6,6 +6,7 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.TaskDto;
+import codeit.models.enums.TaskStatus;
 import codeit.services.EmployeeService;
 import codeit.services.TaskService;
 import codeit.validators.entities.TaskDtoValidator;
@@ -26,6 +27,11 @@ public class PostUpdateTaskCommand implements Command {
 
         if (errors.isEmpty()) {
             TaskService.getInstance().updateTask(taskDto.toTask());
+
+            if (TaskService.getInstance().getTaskById(taskDto.getId()).getStatus() == TaskStatus.CREATED
+                    && taskDto.getDeveloperId() != null && !taskDto.getDeveloperId().isEmpty())
+                TaskService.getInstance().startDevelopingTask(taskDto.getId());
+
             redirectToTaskPageWithSuccessMessage(request, response, taskDto.getId());
             return RedirectionManager.REDIRECTION;
         }

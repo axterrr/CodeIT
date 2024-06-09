@@ -84,9 +84,21 @@ public class TaskService {
         }
     }
 
+    public void startDevelopingTask(String taskId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.changeStatus(TaskStatus.DEVELOPING.getValue(), taskId);
+        }
+    }
+
     public void confirmTask(String taskId) {
         try (TaskDao dao = daoFactory.createTaskDao()) {
-            dao.changeStatus(TaskStatus.FINISHED.getValue(), taskId);
+            dao.finish(taskId);
+        }
+    }
+
+    public void cancelTasksByOrder(String orderId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.cancelByOrder(orderId);
         }
     }
 }

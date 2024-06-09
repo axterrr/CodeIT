@@ -16,7 +16,7 @@ public class GetAddProjectCommand implements Command {
         String orderId = request.getParameter(Attribute.ORDER_ID);
         if (orderId != null)
             request.setAttribute(Attribute.ORDER_ID, orderId);
-        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllOrdersWithoutProjects());
+        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllAcceptedOrders());
         request.setAttribute(Attribute.MANAGERS, EmployeeService.getInstance().getAllManagers());
         return Page.ADD_UPDATE_PROJECT_VIEW;
     }

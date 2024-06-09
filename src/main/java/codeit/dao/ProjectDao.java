@@ -7,6 +7,7 @@ import codeit.services.EmployeeService;
 import codeit.services.OrderService;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ProjectDao implements AutoCloseable {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static String UPDATE =
             "UPDATE `project` " +
-            "SET manager_id=?, name=?, description=?, project_link=?, due_date=?, end_date=?, status=? " +
+            "SET manager_id=?, name=?, description=?, project_link=?, due_date=? " +
             "WHERE project_id=?";
     private static String DELETE = "DELETE FROM `project` WHERE project_id=?";
     private static String GET_BY_ORDER = "SELECT * FROM `project` WHERE order_id=?";
@@ -38,6 +39,12 @@ public class ProjectDao implements AutoCloseable {
             "                   FROM `project` " +
             "                   WHERE project_id=?) ";
     private static String CHANGE_STATUS = "UPDATE `project` SET status=? WHERE project_id=?";
+    private static String CANCEL_BY_ORDER = "UPDATE `project` SET status='Cancelled' WHERE order_id=?";
+    private static String FINISH = "UPDATE `project` SET status=?, end_date=? WHERE project_id=?";
+    private static String GET_ALL_CREATED_DEVELOPING =
+            "SELECT * FROM `project` " +
+            "WHERE status='Created' " +
+            "OR status='Developing'";
 
     private static String ID = "project_id";
     private static String ORDER_ID = "order_id";
@@ -111,10 +118,7 @@ public class ProjectDao implements AutoCloseable {
             query.setString(3, project.getDescription());
             query.setString(4, project.getGitHubLink());
             query.setTimestamp(5, Timestamp.valueOf(project.getDueDate()));
-            query.setTimestamp(6, project.getEndDate() == null ? null :
-                    Timestamp.valueOf(project.getEndDate()));
-            query.setString(7, project.getStatus().getValue());
-            query.setString(8, project.getId());
+            query.setString(6, project.getId());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -179,6 +183,39 @@ public class ProjectDao implements AutoCloseable {
         } catch (SQLException e) {
             throw new ServerException(e);
         }
+    }
+
+    public void finish(String id) {
+        try (PreparedStatement query = connection.prepareStatement(FINISH)) {
+            query.setString(1, ProjectStatus.FINISHED.getValue());
+            query.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            query.setString(3, id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public void cancelByOrder(String orderId) {
+        try (PreparedStatement query = connection.prepareStatement(CANCEL_BY_ORDER)) {
+            query.setString(1, orderId);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public List<Project> getAllCreatedDeveloping() {
+        List<Project> projects = new ArrayList<>();
+        try (Statement query = connection.createStatement();
+             ResultSet resultSet = query.executeQuery(GET_ALL_CREATED_DEVELOPING)) {
+            while (resultSet.next()) {
+                projects.add(extractProjectFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return projects;
     }
 
     private static Project extractProjectFromResultSet(ResultSet resultSet) throws SQLException {

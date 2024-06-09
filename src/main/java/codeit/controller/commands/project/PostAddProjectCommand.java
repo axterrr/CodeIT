@@ -6,6 +6,7 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.ProjectDto;
+import codeit.models.enums.OrderStatus;
 import codeit.services.EmployeeService;
 import codeit.services.OrderService;
 import codeit.services.ProjectService;
@@ -26,17 +27,18 @@ public class PostAddProjectCommand implements Command {
         List<String> errors = ProjectDtoValidator.getInstance().validate(projectDto);
 
         if (errors.isEmpty()) {
-            if (ProjectService.getInstance().getProjectByOrder(projectDto.getOrderId()) == null) {
+            if (OrderService.getInstance().getOrderById(projectDto.getOrderId()).getStatus() == OrderStatus.ACCEPTED) {
                 ProjectService.getInstance().createProject(projectDto.toProject());
+                OrderService.getInstance().startDevelopingOrder(projectDto.getOrderId());
                 redirectToProjectPageWithSuccessMessage(request, response, projectDto.getId());
                 return RedirectionManager.REDIRECTION;
             }
             else {
-                errors.add("This order already has a project");
+                errors.add("This order can not have new project");
             }
         }
 
-        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllOrdersWithoutProjects());
+        request.setAttribute(Attribute.ORDERS, OrderService.getInstance().getAllAcceptedOrders());
         request.setAttribute(Attribute.MANAGERS, EmployeeService.getInstance().getAllManagers());
         addRequestAttributes(request, projectDto, errors);
         return Page.ADD_UPDATE_PROJECT_VIEW;

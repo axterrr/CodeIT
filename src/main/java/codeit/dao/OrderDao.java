@@ -1,7 +1,6 @@
 package codeit.dao;
 
 import codeit.exceptions.ServerException;
-import codeit.models.entities.Client;
 import codeit.models.entities.Order;
 import codeit.models.enums.OrderStatus;
 import codeit.services.ClientService;
@@ -20,13 +19,10 @@ public class OrderDao implements AutoCloseable {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static String UPDATE =
             "UPDATE `order` " +
-            "SET name=?, description=?, due_date=?, cost=?, status=? " +
+            "SET name=?, description=?, due_date=?, cost=? " +
             "WHERE order_id=?";
     private static String DELETE = "DELETE FROM `order` WHERE order_id=?";
-    private static String GET_ALL_WITHOUT_PROJECTS =
-            "SELECT * FROM `order` " +
-            "WHERE order_id NOT IN (SELECT order_id " +
-            "                       FROM project)";
+    private static String GET_ALL_ACCEPTED = "SELECT * FROM `order` WHERE status='Accepted'";
     private static String GET_ALL_BY_CLIENT = "SELECT * FROM `order` WHERE client_id=?";
     private static String CHANGE_STATUS = "UPDATE `order` SET status=? WHERE order_id=?";
 
@@ -94,8 +90,7 @@ public class OrderDao implements AutoCloseable {
             query.setString(2, order.getDescription());
             query.setTimestamp(3, Timestamp.valueOf(order.getDueDate()));
             query.setBigDecimal(4, order.getCost());
-            query.setString(5, order.getStatus().getValue());
-            query.setString(6, order.getId());
+            query.setString(5, order.getId());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -111,10 +106,10 @@ public class OrderDao implements AutoCloseable {
         }
     }
 
-    public List<Order> getAllWithoutProjects() {
+    public List<Order> getAllAccepted() {
         List<Order> orders = new ArrayList<>();
         try (Statement query = connection.createStatement();
-             ResultSet resultSet = query.executeQuery(GET_ALL_WITHOUT_PROJECTS)) {
+             ResultSet resultSet = query.executeQuery(GET_ALL_ACCEPTED)) {
             while (resultSet.next()) {
                 orders.add(extractOrderFromResultSet(resultSet));
             }

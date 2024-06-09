@@ -1,14 +1,13 @@
 package codeit.dao;
 
 import codeit.exceptions.ServerException;
-import codeit.models.entities.Employee;
-import codeit.models.entities.Project;
 import codeit.models.entities.Task;
 import codeit.models.enums.TaskStatus;
 import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +21,19 @@ public class TaskDao implements AutoCloseable {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static String UPDATE =
             "UPDATE `task` " +
-            "SET developer_id=?, tester_id=?, name=?, description=?, task_link=?, due_date=?, end_date=?, status=?, comment=? " +
+            "SET developer_id=?, tester_id=?, name=?, description=?, task_link=?, due_date=? " +
             "WHERE task_id=?";
     private static String DELETE = "DELETE FROM `task` WHERE task_id=?";
     private static String GET_ALL_BY_PROJECT = "SELECT * FROM `task` WHERE project_id=?";
     private static String GET_ALL_BY_DEVELOPER = "SELECT * FROM `task` WHERE developer_id=?";
     private static String GET_ALL_BY_TESTER = "SELECT * FROM `task` WHERE tester_id=?";
     private static String CHANGE_STATUS = "UPDATE `task` SET status=? WHERE task_id=?";
+    private static String CANCEL_BY_ORDER =
+            "UPDATE `task` SET status='Cancelled' " +
+            "WHERE project_id IN (SELECT project_id " +
+            "                     FROM `project` " +
+            "                     WHERE order_id=?)";
+    private static String FINISH = "UPDATE `task` SET status=?, end_date=? WHERE task_id=?";
 
     private static String ID = "task_id";
     private static String PROJECT_ID = "project_id";
@@ -104,10 +109,7 @@ public class TaskDao implements AutoCloseable {
             query.setString(4, task.getDescription());
             query.setString(5, task.getBranchLink());
             query.setTimestamp(6, Timestamp.valueOf(task.getDueDate()));
-            query.setTimestamp(7, task.getEndDate() == null ? null : Timestamp.valueOf(task.getEndDate()));
-            query.setString(8, task.getStatus().getValue());
-            query.setString(9, task.getComment());
-            query.setString(10, task.getId());
+            query.setString(7, task.getId());
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);
@@ -169,6 +171,26 @@ public class TaskDao implements AutoCloseable {
         try (PreparedStatement query = connection.prepareStatement(CHANGE_STATUS)) {
             query.setString(1, status);
             query.setString(2, id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public void cancelByOrder(String orderId) {
+        try (PreparedStatement query = connection.prepareStatement(CANCEL_BY_ORDER)) {
+            query.setString(1, orderId);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public void finish(String id) {
+        try (PreparedStatement query = connection.prepareStatement(FINISH)) {
+            query.setString(1, TaskStatus.FINISHED.getValue());
+            query.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            query.setString(3, id);
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);

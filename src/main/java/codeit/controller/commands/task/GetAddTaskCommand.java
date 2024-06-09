@@ -16,7 +16,7 @@ public class GetAddTaskCommand implements Command {
         String projectId = request.getParameter(Attribute.PROJECT_ID);
         if (projectId != null)
             request.setAttribute(Attribute.PROJECT_ID, projectId);
-        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllProjects());
+        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllCreatedDevelopingProjects());
         request.setAttribute(Attribute.DEVELOPERS, EmployeeService.getInstance().getAllDevelopers());
         request.setAttribute(Attribute.TESTERS, EmployeeService.getInstance().getAllTesters());
         return Page.ADD_UPDATE_TASK_VIEW;

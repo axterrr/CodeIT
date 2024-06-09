@@ -82,7 +82,25 @@ public class ProjectService {
 
     public void confirmProject(String projectId) {
         try (ProjectDao dao = daoFactory.createProjectDao()) {
-            dao.changeStatus(ProjectStatus.FINISHED.getValue(), projectId);
+            dao.finish(projectId);
+        }
+    }
+
+    public void startDevelopingProject(String projectId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            dao.changeStatus(ProjectStatus.DEVELOPING.getValue(), projectId);
+        }
+    }
+
+    public void cancelProjectByOrder(String orderId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            dao.cancelByOrder(orderId);
+        }
+    }
+
+    public List<Project> getAllCreatedDevelopingProjects() {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            return dao.getAllCreatedDeveloping();
         }
     }
 }

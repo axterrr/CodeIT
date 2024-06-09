@@ -4,6 +4,8 @@ import codeit.constants.Attribute;
 import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
+import codeit.models.entities.Task;
+import codeit.models.enums.TaskStatus;
 import codeit.services.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,13 @@ public class RejectTaskCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String taskId = request.getParameter(Attribute.TASK_ID);
+        Task task = TaskService.getInstance().getTaskById(taskId);
+
+        if (task.getStatus() != TaskStatus.AWAITING_CONFIRMATION) {
+            redirectToTaskPageWithErrorMessage(request, response);
+            return RedirectionManager.REDIRECTION;
+        }
+
         TaskService.getInstance().rejectTask(taskId);
         redirectToTaskPageWithSuccessMessage(request, response);
         return RedirectionManager.REDIRECTION;
@@ -28,6 +37,15 @@ public class RejectTaskCommand implements Command {
         Map<String, String> urlParams = new HashMap<>();
         urlParams.put(Attribute.TASK_ID, request.getParameter(Attribute.TASK_ID));
         urlParams.put(Attribute.SUCCESS, "Task successfully rejected");
+        RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASK, urlParams);
+    }
+
+    private void redirectToTaskPageWithErrorMessage(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        Map<String, String> urlParams = new HashMap<>();
+        urlParams.put(Attribute.TASK_ID, request.getParameter(Attribute.TASK_ID));
+        urlParams.put(Attribute.ERROR, "Task can not be rejected");
         RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASK, urlParams);
     }
 }

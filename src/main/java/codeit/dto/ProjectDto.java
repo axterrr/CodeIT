@@ -37,7 +37,7 @@ public class ProjectDto {
         if(status == null)
             status = "Created";
 
-        if(managerId.isEmpty())
+        if(managerId!=null && managerId.isEmpty())
             managerId = null;
 
         return new Project.Builder()

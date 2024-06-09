@@ -14,19 +14,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SubmitTaskCommand implements Command {
+public class RejectTaskTestCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String taskId = request.getParameter(Attribute.TASK_ID);
         Task task = TaskService.getInstance().getTaskById(taskId);
 
-        if (task.getStatus() != TaskStatus.DEVELOPING) {
+        if (task.getStatus() != TaskStatus.TESTING) {
             redirectToTaskPageWithErrorMessage(request, response);
             return RedirectionManager.REDIRECTION;
         }
 
-        TaskService.getInstance().submitTask(taskId);
+        TaskService.getInstance().rejectTask(taskId);
         redirectToTaskPageWithSuccessMessage(request, response);
         return RedirectionManager.REDIRECTION;
     }
@@ -36,7 +36,7 @@ public class SubmitTaskCommand implements Command {
 
         Map<String, String> urlParams = new HashMap<>();
         urlParams.put(Attribute.TASK_ID, request.getParameter(Attribute.TASK_ID));
-        urlParams.put(Attribute.SUCCESS, "Task successfully submitted");
+        urlParams.put(Attribute.SUCCESS, "Task successfully rejected");
         RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASK, urlParams);
     }
 
@@ -45,7 +45,7 @@ public class SubmitTaskCommand implements Command {
 
         Map<String, String> urlParams = new HashMap<>();
         urlParams.put(Attribute.TASK_ID, request.getParameter(Attribute.TASK_ID));
-        urlParams.put(Attribute.ERROR, "Task can not be submitted");
+        urlParams.put(Attribute.ERROR, "Task can not be rejected");
         RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.TASK, urlParams);
     }
 }

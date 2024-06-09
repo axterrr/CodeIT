@@ -48,9 +48,9 @@ public class OrderService {
         }
     }
 
-    public List<Order> getAllOrdersWithoutProjects() {
+    public List<Order> getAllAcceptedOrders() {
         try (OrderDao dao = daoFactory.createOrderDao()) {
-            return dao.getAllWithoutProjects();
+            return dao.getAllAccepted();
         }
     }
 
@@ -75,6 +75,18 @@ public class OrderService {
     public void rejectOrder(String orderId) {
         try (OrderDao dao = daoFactory.createOrderDao()) {
             dao.changeStatus(OrderStatus.REJECTED.getValue(), orderId);
+        }
+    }
+
+    public void completeOrder(String orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.changeStatus(OrderStatus.DONE.getValue(), orderId);
+        }
+    }
+
+    public void startDevelopingOrder(String orderId) {
+        try (OrderDao dao = daoFactory.createOrderDao()) {
+            dao.changeStatus(OrderStatus.DEVELOPING.getValue(), orderId);
         }
     }
 }

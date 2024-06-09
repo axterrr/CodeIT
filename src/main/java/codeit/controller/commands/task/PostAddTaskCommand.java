@@ -6,7 +6,10 @@ import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
 import codeit.controller.utils.RedirectionManager;
 import codeit.dto.TaskDto;
+import codeit.models.entities.Project;
+import codeit.models.enums.ProjectStatus;
 import codeit.services.EmployeeService;
+import codeit.services.OrderService;
 import codeit.services.ProjectService;
 import codeit.services.TaskService;
 import codeit.validators.entities.TaskDtoValidator;
@@ -26,12 +29,26 @@ public class PostAddTaskCommand implements Command {
         List<String> errors = TaskDtoValidator.getInstance().validate(taskDto);
 
         if (errors.isEmpty()) {
-            TaskService.getInstance().createTask(taskDto.toTask());
-            redirectToTaskPageWithSuccessMessage(request, response, taskDto.getId());
-            return RedirectionManager.REDIRECTION;
+            Project project = ProjectService.getInstance().getProjectById(taskDto.getProjectId());
+
+            if (project.getStatus() == ProjectStatus.CREATED || project.getStatus() == ProjectStatus.DEVELOPING) {
+                TaskService.getInstance().createTask(taskDto.toTask());
+
+                if (project.getStatus() == ProjectStatus.CREATED)
+                    ProjectService.getInstance().startDevelopingProject(taskDto.getProjectId());
+
+                if (taskDto.getDeveloperId() != null && !taskDto.getDeveloperId().isEmpty())
+                    TaskService.getInstance().startDevelopingTask(taskDto.getId());
+
+                redirectToTaskPageWithSuccessMessage(request, response, taskDto.getId());
+                return RedirectionManager.REDIRECTION;
+            }
+            else {
+                errors.add("This project can not have new task");
+            }
         }
 
-        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllProjects());
+        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllCreatedDevelopingProjects());
         request.setAttribute(Attribute.DEVELOPERS, EmployeeService.getInstance().getAllDevelopers());
         request.setAttribute(Attribute.TESTERS, EmployeeService.getInstance().getAllTesters());
         addRequestAttributes(request, taskDto, errors);

@@ -42,10 +42,10 @@ public class TaskDto {
         if(status == null)
             status = "Created";
 
-        if(developerId.isEmpty())
+        if(developerId!=null && developerId.isEmpty())
             developerId = null;
 
-        if(testerId.isEmpty())
+        if(testerId!=null && testerId.isEmpty())
             testerId = null;
 
         return new Task.Builder()
