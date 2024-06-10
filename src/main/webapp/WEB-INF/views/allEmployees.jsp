@@ -57,10 +57,12 @@
                     </div>
                 </form>
             </div>
-            <div class="buttons-container">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/employees/add';">Add new Employee</button>
-                <button class="button" onclick="printTable('Employees')">Create Report</button>
-            </div>
+            <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                <div class="buttons-container">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/employees/add';">Add new Employee</button>
+                    <button class="button" onclick="printTable('Employees')">Create Report</button>
+                </div>
+            </c:if>
         </div>
     </div>
     <c:if test="${not empty param.success}">
@@ -105,10 +107,12 @@
                         <span class="card-address card-address-value">${employee.getAddress()}</span>
                     </span>
                 </div>
-                <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}')">Delete Employee</button>
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/update?employeeId=${employee.getId()}';">Edit Employee</button>
-                </div>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <div class="card-buttons-container">
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/employees/delete?employeeId=${employee.getId()}')">Delete Employee</button>
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/employees/update?employeeId=${employee.getId()}';">Edit Employee</button>
+                    </div>
+                </c:if>
             </div>
         </c:forEach>
     </div>

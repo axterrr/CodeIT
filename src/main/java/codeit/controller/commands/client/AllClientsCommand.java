@@ -2,20 +2,39 @@ package codeit.controller.commands.client;
 
 import codeit.constants.Attribute;
 import codeit.constants.Page;
+import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
+import codeit.controller.utils.RedirectionManager;
+import codeit.controller.utils.SessionManager;
 import codeit.models.entities.Client;
+import codeit.models.entities.Employee;
+import codeit.models.enums.Role;
 import codeit.services.ClientService;
 import codeit.services.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 public class AllClientsCommand implements Command {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Client> clients = ClientService.getInstance().getAllClients();
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Client loggedInClient = SessionManager.getInstance().getClientFromSession(request.getSession());
+        if (loggedInClient != null) {
+            Map<String, String> urlParams = new HashMap<>();
+            urlParams.put(Attribute.CLIENT_ID, loggedInClient.getId());
+            RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.CLIENT, urlParams);
+            return RedirectionManager.REDIRECTION;
+        }
+
+        List<Client> clients = new ArrayList<>();
+
+        Employee loggedInEmployee = SessionManager.getInstance().getEmployeeFromSession(request.getSession());
+        if (loggedInEmployee != null && loggedInEmployee.getRole() == Role.CEO)
+            clients = ClientService.getInstance().getAllClients();
 
         clients = searchByName(clients, request);
         sort(clients, request);

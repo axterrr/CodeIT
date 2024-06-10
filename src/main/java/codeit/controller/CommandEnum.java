@@ -37,8 +37,6 @@ public enum CommandEnum {
     ORDER ("GET:/orders/order", new OrderCommand()),
     GET_ADD_ORDER ("GET:/orders/add", new GetAddOrderCommand()),
     POST_ADD_ORDER ("POST:/orders/add", new PostAddOrderCommand()),
-    GET_UPDATE_ORDER ("GET:/orders/update", new GetUpdateOrderCommand()),
-    POST_UPDATE_ORDER ("POST:/orders/update", new PostUpdateOrderCommand()),
     DELETE_ORDER ("GET:/orders/delete", new DeleteOrderCommand()),
     ACCEPT_ORDER ("GET:/orders/accept", new AcceptOrderCommand()),
     REJECT_ORDER ("GET:/orders/reject", new RejectOrderCommand()),

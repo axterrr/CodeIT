@@ -17,8 +17,26 @@
     <div class="container full-container full-order-container">
         <div class="info-container order-info-container">
             <div class="order-status-icon">
-                <img src="img/status.png" alt=""/>
-            </div>
+                <c:choose>
+                    <c:when test="${order.getStatus() == 'PENDING'}">
+                        <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${order.getStatus() == 'ACCEPTED'}">
+                        <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${order.getStatus() == 'DEVELOPING'}">
+                        <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${order.getStatus() == 'DONE'}">
+                        <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${order.getStatus() == 'REJECTED'}">
+                        <img src="<c:url value="/resources/image/status/rejected.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${order.getStatus() == 'CANCELLED'}">
+                        <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                    </c:when>
+                </c:choose>            </div>
             <div class="order-name-container">
                 <label class="full-order-label order-name order-name-value">${order.getName()}</label>
             </div>
@@ -29,9 +47,16 @@
             <c:if test="${not empty project}">
                 <div class="order-project-container">
                     <label class="full-order-label order-project full-order-info-label">Project:</label>
-                    <a href="${pageContext.request.contextPath}/controller/projects/project?projectId=${project.getId()}">
-                        <label class="a-label full-order-label order-project order-project-value">${project.getName()}</label>
-                    </a>
+                    <c:choose>
+                        <c:when test="${not empty loggedEmployee}">
+                            <a href="${pageContext.request.contextPath}/controller/projects/project?projectId=${project.getId()}">
+                                <label class="a-label full-order-label order-project order-project-value">${project.getName()}</label>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <label class="full-order-label order-project order-project-value">${project.getName()}</label>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </c:if>
             <div class="order-client-container">
@@ -62,16 +87,26 @@
     </div>
     <div class="container fixed-container order-fixed-container">
         <div class="order-buttons-container">
-            <div class="order-buttons-container ob-part ob-part1">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add?orderId=${order.getId()}';">Add Project</button>
-            </div>
-            <div class="order-buttons-container ob-part ob-part3">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/accept?orderId=${order.getId()}';">Accept Order</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/reject?orderId=${order.getId()}';">Reject Order</button>
-            </div>
+        <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+            <c:if test="${order.getStatus() == 'ACCEPTED'}">
+                <div class="order-buttons-container ob-part ob-part1">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add?orderId=${order.getId()}';">Add Project</button>
+                </div>
+            </c:if>
+            <c:if test="${order.getStatus() == 'PENDING'}">
+                <div class="order-buttons-container ob-part ob-part3">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/accept?orderId=${order.getId()}';">Accept Order</button>
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/reject?orderId=${order.getId()}';">Reject Order</button>
+                </div>
+            </c:if>
+        </c:if>
             <div class="order-buttons-container ob-part ob-part2">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/cancel?orderId=${order.getId()}';">Cancel Order</button>
-                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}')">Delete Order</button>
+                <c:if test="${not empty loggedClient and (order.getStatus() != 'DONE' and order.getStatus() != 'CANCELLED')}">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/cancel?orderId=${order.getId()}';">Cancel Order</button>
+                </c:if>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}')">Delete Order</button>
+                </c:if>
             </div>
         </div>
     </div>

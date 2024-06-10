@@ -35,24 +35,26 @@
                         </label>
                     </div>
                 </div>
-                <div class="filter-container">
-                    <label for="filter-manager-group" class="filter-label">Project Manager</label>
-                    <select class="filter-select filter-multiple-select" id="filter-manager-group">
-                        <option></option>
-                        <c:forEach items="${managers}" var="manager">
-                            <option value=${manager.getId()}>${manager.getFirstName()} ${manager.getLastName()}</option>
-                        </c:forEach>
-                    </select>
-                    <div id="managersFilterContainer">
-                        <c:forEach items="${selectedManagers}" var="manager">
-                            <div class="client-module" id="${manager.getId()}">
-                                <p class="module-label">${manager.getFirstName()} ${manager.getLastName()}</p>
-                                <input type="hidden" name="selectedManagers" value="${manager.getId()}">
-                                <button class="button module-button" type="button">&times;</button>
-                            </div>
-                        </c:forEach>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <div class="filter-container">
+                        <label for="filter-manager-group" class="filter-label">Project Manager</label>
+                        <select class="filter-select filter-multiple-select" id="filter-manager-group">
+                            <option></option>
+                            <c:forEach items="${managers}" var="manager">
+                                <option value=${manager.getId()}>${manager.getFirstName()} ${manager.getLastName()}</option>
+                            </c:forEach>
+                        </select>
+                        <div id="managersFilterContainer">
+                            <c:forEach items="${selectedManagers}" var="manager">
+                                <div class="client-module" id="${manager.getId()}">
+                                    <p class="module-label">${manager.getFirstName()} ${manager.getLastName()}</p>
+                                    <input type="hidden" name="selectedManagers" value="${manager.getId()}">
+                                    <button class="button module-button" type="button">&times;</button>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
-                </div>
+                </c:if>
                 <div class="filter-container">
                     <label for="filter-start-date-group" class="filter-label">Start Date</label>
                     <div class="dates-input-container" id="filter-start-date-group">
@@ -119,10 +121,12 @@
                     </div>
                 </form>
             </div>
-            <div class="buttons-container">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add';">Add new Project</button>
-                <button class="button" onclick="printTable()">Create Report</button>
-            </div>
+            <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                <div class="buttons-container">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/add';">Add new Project</button>
+                    <button class="button" onclick="printTable()">Create Report</button>
+                </div>
+            </c:if>
         </div>
     </div>
     <c:if test="${not empty param.success}">
@@ -143,8 +147,23 @@
         <c:forEach items="${projects}" var="project">
             <div class="card project-card" onclick="location.href='${pageContext.request.contextPath}/controller/projects/project?projectId=${project.getId()}';">
                 <div class="card-status-icon">
-                    <img src="img/status.png" alt=""/>
-                </div>
+                    <c:choose>
+                        <c:when test="${project.getStatus() == 'AWAITING_CONFIRMATION'}">
+                            <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${project.getStatus() == 'CREATED'}">
+                            <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${project.getStatus() == 'DEVELOPING'}">
+                            <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${project.getStatus() == 'FINISHED'}">
+                            <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${project.getStatus() == 'CANCELLED'}">
+                            <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                        </c:when>
+                    </c:choose>                </div>
                 <div class="card-name-container">
                     <span class="card-name">Project Name :
                         <span class="card-name card-name-value">${project.getName()}</span>
@@ -168,10 +187,12 @@
                         <span class="card-due-date card-due-date-value">${project.getDueDateString()}</span>
                     </span>
                 </div>
-                <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
-                </div>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <div class="card-buttons-container">
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
+                    </div>
+                </c:if>
             </div>
         </c:forEach>
     </div>

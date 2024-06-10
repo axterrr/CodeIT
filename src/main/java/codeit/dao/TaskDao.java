@@ -25,6 +25,11 @@ public class TaskDao implements AutoCloseable {
             "WHERE task_id=?";
     private static String DELETE = "DELETE FROM `task` WHERE task_id=?";
     private static String GET_ALL_BY_PROJECT = "SELECT * FROM `task` WHERE project_id=?";
+    private static String GET_ALL_BY_MANAGER =
+            "SELECT * FROM `task` " +
+            "WHERE project_id IN (SELECT project_id " +
+            "                     FROM `project` " +
+            "                     WHERE manager_id=?)";
     private static String GET_ALL_BY_DEVELOPER = "SELECT * FROM `task` WHERE developer_id=?";
     private static String GET_ALL_BY_TESTER = "SELECT * FROM `task` WHERE tester_id=?";
     private static String CHANGE_STATUS = "UPDATE `task` SET status=? WHERE task_id=?";
@@ -130,6 +135,20 @@ public class TaskDao implements AutoCloseable {
         List<Task> tasks = new ArrayList<>();
         try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_PROJECT)) {
             query.setString(1, projectId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                tasks.add(extractTaskFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return tasks;
+    }
+
+    public List<Task> getAllByManager(String managerId) {
+        List<Task> tasks = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_MANAGER)) {
+            query.setString(1, managerId);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 tasks.add(extractTaskFromResultSet(resultSet));

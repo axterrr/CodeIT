@@ -45,6 +45,16 @@ public class ProjectDao implements AutoCloseable {
             "SELECT * FROM `project` " +
             "WHERE status='Created' " +
             "OR status='Developing'";
+    private static String GET_ALL_BY_DEVELOPER =
+            "SELECT * FROM `project` " +
+            "WHERE project_id IN (SELECT project_id" +
+            "                     FROM task " +
+            "                     WHERE developer_id=?)";
+    private static String GET_ALL_BY_TESTER =
+            "SELECT * FROM `project` " +
+                    "WHERE project_id IN (SELECT project_id" +
+                    "                     FROM task " +
+                    "                     WHERE tester_id=?)";
 
     private static String ID = "project_id";
     private static String ORDER_ID = "order_id";
@@ -209,6 +219,34 @@ public class ProjectDao implements AutoCloseable {
         List<Project> projects = new ArrayList<>();
         try (Statement query = connection.createStatement();
              ResultSet resultSet = query.executeQuery(GET_ALL_CREATED_DEVELOPING)) {
+            while (resultSet.next()) {
+                projects.add(extractProjectFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return projects;
+    }
+
+    public List<Project> getAllByDeveloper(String developerId) {
+        List<Project> projects = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_DEVELOPER)) {
+            query.setString(1, developerId);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                projects.add(extractProjectFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+        return projects;
+    }
+
+    public List<Project> getAllByTester(String testerId) {
+        List<Project> projects = new ArrayList<>();
+        try (PreparedStatement query = connection.prepareStatement(GET_ALL_BY_TESTER)) {
+            query.setString(1, testerId);
+            ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 projects.add(extractProjectFromResultSet(resultSet));
             }

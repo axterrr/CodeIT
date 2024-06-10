@@ -58,42 +58,44 @@
                         </label>
                     </div>
                 </div>
-                <div class="filter-container">
-                    <label for="filter-developer-group" class="filter-label">Developer</label>
-                    <select class="filter-select filter-multiple-select" id="filter-developer-group">
-                        <option></option>
-                        <c:forEach items="${developers}" var="developer">
-                            <option value=${developer.getId()}>${developer.getFirstName()} ${developer.getLastName()}</option>
-                        </c:forEach>
-                    </select>
-                    <div id="developersFilterContainer">
-                        <c:forEach items="${selectedDevelopers}" var="developer">
-                            <div class="developer-module" id="${developer.getId()}">
-                                <p class="module-label">${developer.getFirstName()} ${developer.getLastName()}</p>
-                                <input type="hidden" name="selectedDevelopers" value="${developer.getId()}">
-                                <button class="button module-button" type="button">&times;</button>
-                            </div>
-                        </c:forEach>
+                <c:if test="${not empty loggedEmployee and (loggedEmployee.getRole() == 'CEO' or loggedEmployee.getRole() == 'PROJECT_MANAGER')}">
+                    <div class="filter-container">
+                        <label for="filter-developer-group" class="filter-label">Developer</label>
+                        <select class="filter-select filter-multiple-select" id="filter-developer-group">
+                            <option></option>
+                            <c:forEach items="${developers}" var="developer">
+                                <option value=${developer.getId()}>${developer.getFirstName()} ${developer.getLastName()}</option>
+                            </c:forEach>
+                        </select>
+                        <div id="developersFilterContainer">
+                            <c:forEach items="${selectedDevelopers}" var="developer">
+                                <div class="developer-module" id="${developer.getId()}">
+                                    <p class="module-label">${developer.getFirstName()} ${developer.getLastName()}</p>
+                                    <input type="hidden" name="selectedDevelopers" value="${developer.getId()}">
+                                    <button class="button module-button" type="button">&times;</button>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
-                </div>
-                <div class="filter-container">
-                    <label for="filter-tester-group" class="filter-label">Tester</label>
-                    <select class="filter-select filter-multiple-select" id="filter-tester-group">
-                        <option></option>
-                        <c:forEach items="${testers}" var="tester">
-                            <option value=${tester.getId()}>${tester.getFirstName()} ${tester.getLastName()}</option>
-                        </c:forEach>
-                    </select>
-                    <div id="testersFilterContainer">
-                        <c:forEach items="${selectedTesters}" var="tester">
-                            <div class="client-module" id="${tester.getId()}">
-                                <p class="module-label">${tester.getFirstName()} ${tester.getLastName()}</p>
-                                <input type="hidden" name="selectedTesters" value="${tester.getId()}">
-                                <button class="button module-button" type="button">&times;</button>
-                            </div>
-                        </c:forEach>
+                    <div class="filter-container">
+                        <label for="filter-tester-group" class="filter-label">Tester</label>
+                        <select class="filter-select filter-multiple-select" id="filter-tester-group">
+                            <option></option>
+                            <c:forEach items="${testers}" var="tester">
+                                <option value=${tester.getId()}>${tester.getFirstName()} ${tester.getLastName()}</option>
+                            </c:forEach>
+                        </select>
+                        <div id="testersFilterContainer">
+                            <c:forEach items="${selectedTesters}" var="tester">
+                                <div class="client-module" id="${tester.getId()}">
+                                    <p class="module-label">${tester.getFirstName()} ${tester.getLastName()}</p>
+                                    <input type="hidden" name="selectedTesters" value="${tester.getId()}">
+                                    <button class="button module-button" type="button">&times;</button>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
-                </div>
+                </c:if>
                 <div class="filter-container">
                     <label for="filter-start-date-group" class="filter-label">Start Date</label>
                     <div class="dates-input-container" id="filter-start-date-group">
@@ -158,8 +160,12 @@
                 </form>
             </div>
             <div class="buttons-container">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/add';">Add new Task</button>
-                <button class="button" onclick="printTable()">Create Report</button>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'PROJECT_MANAGER'}">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/add';">Add new Task</button>
+                </c:if>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <button class="button" onclick="printTable()">Create Report</button>
+                </c:if>
             </div>
             <script>
                 function printTable() {
@@ -213,7 +219,26 @@
         <c:forEach items="${tasks}" var="task">
             <div class="card task-card" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/task?taskId=${task.getId()}';">
                 <div class="card-status-icon">
-                    <img src="img/status.png" alt=""/>
+                    <c:choose>
+                        <c:when test="${task.getStatus() == 'AWAITING_CONFIRMATION'}">
+                            <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${task.getStatus() == 'CREATED'}">
+                            <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${task.getStatus() == 'DEVELOPING'}">
+                            <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${task.getStatus() == 'TESTING'}">
+                            <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${task.getStatus() == 'FINISHED'}">
+                            <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${task.getStatus() == 'CANCELLED'}">
+                            <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                        </c:when>
+                    </c:choose>
                 </div>
                 <div class="card-name-container">
                     <span class="card-name">Task Name :
@@ -248,10 +273,12 @@
                         <span class="card-due-date card-due-date-value">${task.getDueDateString()}</span>
                     </span>
                 </div>
-                <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
-                </div>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'PROJECT_MANAGER'}">
+                    <div class="card-buttons-container">
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
+                    </div>
+                </c:if>
             </div>
         </c:forEach>
     </div>

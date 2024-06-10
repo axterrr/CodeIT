@@ -65,22 +65,73 @@ public class UnauthorizedAccessFilter implements Filter {
     }
 
     private boolean isClientPage(String requestURI) {
-        return true;
+        return requestURI.equals("/controller/login")
+                || requestURI.equals("/controller/logout")
+                || requestURI.equals("/controller/clients")
+                || requestURI.equals("/controller/clients/client")
+                || requestURI.equals("/controller/clients/update")
+                || requestURI.equals("/controller/orders")
+                || requestURI.equals("/controller/orders/order")
+                || requestURI.equals("/controller/orders/add")
+                || requestURI.equals("/controller/orders/cancel");
     }
 
     private boolean isCeoPage(String requestURI) {
-        return true;
+        return !requestURI.equals("/controller/orders/add")
+                && !requestURI.equals("/controller/orders/cancel")
+                && !requestURI.equals("/controller/projects/submit")
+                && !requestURI.equals("/controller/tasks/add")
+                && !requestURI.equals("/controller/tasks/update")
+                && !requestURI.equals("/controller/tasks/delete")
+                && !requestURI.equals("/controller/tasks/submit")
+                && !requestURI.equals("/controller/tasks/confirm")
+                && !requestURI.equals("/controller/tasks/reject")
+                && !requestURI.equals("/controller/tasks/confirmTest")
+                && !requestURI.equals("/controller/tasks/rejectTest")
+                && !requestURI.equals("/controller/tasks/comment");
     }
 
     private boolean isProjectManagerPage(String requestURI) {
-        return true;
+        return requestURI.equals("/controller/login")
+                || requestURI.equals("/controller/logout")
+                || requestURI.equals("/controller/employees")
+                || requestURI.equals("/controller/employees/employee")
+                || requestURI.equals("/controller/projects")
+                || requestURI.equals("/controller/projects/project")
+                || requestURI.equals("/controller/projects/submit")
+                || requestURI.equals("/controller/tasks")
+                || requestURI.equals("/controller/tasks/task")
+                || requestURI.equals("/controller/tasks/add")
+                || requestURI.equals("/controller/tasks/update")
+                || requestURI.equals("/controller/tasks/delete")
+                || requestURI.equals("/controller/tasks/confirm")
+                || requestURI.equals("/controller/tasks/reject")
+                || requestURI.equals("/controller/tasks/submit");
     }
 
     private boolean isDeveloperPage(String requestURI) {
-        return true;
+        return requestURI.equals("/controller/login")
+                || requestURI.equals("/controller/logout")
+                || requestURI.equals("/controller/employees")
+                || requestURI.equals("/controller/employees/employee")
+                || requestURI.equals("/controller/projects")
+                || requestURI.equals("/controller/projects/project")
+                || requestURI.equals("/controller/tasks")
+                || requestURI.equals("/controller/tasks/task")
+                || requestURI.equals("/controller/tasks/submit");
     }
 
     private boolean isTesterPage(String requestURI) {
-        return true;
+        return requestURI.equals("/controller/login")
+                || requestURI.equals("/controller/logout")
+                || requestURI.equals("/controller/employees")
+                || requestURI.equals("/controller/employees/employee")
+                || requestURI.equals("/controller/projects")
+                || requestURI.equals("/controller/projects/project")
+                || requestURI.equals("/controller/tasks")
+                || requestURI.equals("/controller/tasks/task")
+                || requestURI.equals("/controller/tasks/confirmTest")
+                || requestURI.equals("/controller/tasks/rejectTest")
+                || requestURI.equals("/controller/tasks/comment");
     }
 }

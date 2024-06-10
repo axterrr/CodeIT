@@ -103,4 +103,16 @@ public class ProjectService {
             return dao.getAllCreatedDeveloping();
         }
     }
+
+    public List<Project> getAllProjectsByDeveloper(String developerId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            return dao.getAllByDeveloper(developerId);
+        }
+    }
+
+    public List<Project> getAllProjectsByTester(String testerId) {
+        try (ProjectDao dao = daoFactory.createProjectDao()) {
+            return dao.getAllByTester(testerId);
+        }
+    }
 }

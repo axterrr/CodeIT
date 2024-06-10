@@ -7,7 +7,7 @@
 <html lang="en_US">
 <head>
     <title>Error Page</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/style.css" />" />
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/stylesheet.css" />" />
 </head>
 <body>
 <div class="error-container container-fluid " align="center">

@@ -2,23 +2,37 @@ package codeit.controller.commands.order;
 
 import codeit.constants.Attribute;
 import codeit.constants.Page;
+import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
+import codeit.controller.utils.RedirectionManager;
+import codeit.controller.utils.SessionManager;
+import codeit.models.entities.Client;
+import codeit.models.entities.Employee;
 import codeit.models.entities.Order;
+import codeit.models.enums.Role;
 import codeit.services.ClientService;
 import codeit.services.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class AllOrdersCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Order> orders = OrderService.getInstance().getAllOrders();
+
+        List<Order> orders = new ArrayList<>();
+
+        Employee loggedInEmployee = SessionManager.getInstance().getEmployeeFromSession(request.getSession());
+        if (loggedInEmployee != null && loggedInEmployee.getRole() == Role.CEO)
+            orders = OrderService.getInstance().getAllOrders();
+
+        Client loggedInClient = SessionManager.getInstance().getClientFromSession(request.getSession());
+        if (loggedInClient != null) {
+            orders = OrderService.getInstance().getAllOrdersByClient(loggedInClient.getId());
+        }
 
         orders = searchByName(orders, request);
         orders = filterByStatuses(orders, request);

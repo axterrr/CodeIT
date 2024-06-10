@@ -3,7 +3,11 @@ package codeit.controller.commands.task;
 import codeit.constants.Attribute;
 import codeit.constants.Page;
 import codeit.controller.commands.Command;
+import codeit.controller.utils.SessionManager;
+import codeit.models.entities.Employee;
+import codeit.models.entities.Project;
 import codeit.models.entities.Task;
+import codeit.models.enums.Role;
 import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 import codeit.services.TaskService;
@@ -19,7 +23,21 @@ public class AllTasksCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Task> tasks = TaskService.getInstance().getAllTasks();
+        List<Task> tasks = new ArrayList<>();
+
+        Employee loggedInEmployee = SessionManager.getInstance().getEmployeeFromSession(request.getSession());
+        if (loggedInEmployee.getRole() == Role.CEO) {
+            tasks = TaskService.getInstance().getAllTasks();
+        }
+        if (loggedInEmployee.getRole() == Role.PROJECT_MANAGER) {
+            tasks = TaskService.getInstance().getAllTasksByManager(loggedInEmployee.getId());
+        }
+        if (loggedInEmployee.getRole() == Role.DEVELOPER) {
+            tasks = TaskService.getInstance().getAllTasksByDeveloper(loggedInEmployee.getId());
+        }
+        if (loggedInEmployee.getRole() == Role.TESTER) {
+            tasks = TaskService.getInstance().getAllTasksByTester(loggedInEmployee.getId());
+        }
 
         tasks = searchByName(tasks, request);
         tasks = filterByStatuses(tasks, request);

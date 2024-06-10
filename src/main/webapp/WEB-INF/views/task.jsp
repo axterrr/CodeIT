@@ -17,7 +17,26 @@
     <div class="container full-container full-task-container">
         <div class="info-container task-info-container">
             <div class="task-status-icon">
-                <img src="img/status.png" alt=""/>
+                <c:choose>
+                    <c:when test="${task.getStatus() == 'AWAITING_CONFIRMATION'}">
+                        <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${task.getStatus() == 'CREATED'}">
+                        <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${task.getStatus() == 'DEVELOPING'}">
+                        <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${task.getStatus() == 'TESTING'}">
+                        <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${task.getStatus() == 'FINISHED'}">
+                        <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${task.getStatus() == 'CANCELLED'}">
+                        <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                    </c:when>
+                </c:choose>
             </div>
             <div class="task-name-container">
                 <label class="full-task-label task-name task-name-value">${task.getName()}</label>
@@ -77,10 +96,13 @@
         </div>
     </div>
     <div class="container fixed-container task-fixed-container">
+
         <div class="task-comment-container">
             <div class="task-comment-header">
                 <label class="full-project-label project-tasks" for="comment">Comment:</label>
-                <button id="editCommentButton" class="button">Edit Comment</button>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'TESTER' and task.getStatus() == 'TESTING'}">
+                    <button id="editCommentButton" class="button">Edit Comment</button>
+                </c:if>
             </div>
             <form action="${pageContext.request.contextPath}/controller/tasks/comment?taskId=${task.getId()}" method="POST" role="form">
                 <div class="task-comment-value-container">
@@ -92,19 +114,29 @@
             </form>
         </div>
         <div class="task-buttons-container">
-            <div class="task-buttons-container tb-part tb-part1">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/submit?taskId=${task.getId()}';">Submit Task</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirmTest?taskId=${task.getId()}';">Test Passed</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/rejectTest?taskId=${task.getId()}';">Test Failed</button>
-            </div>
-            <div class="task-buttons-container tb-part tb-part3">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirm?taskId=${task.getId()}';">Confirm Task</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/reject?taskId=${task.getId()}';">Reject Task</button>
-            </div>
-            <div class="task-buttons-container tb-part tb-part2">
-                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
-            </div>
+            <c:if test="${not empty loggedEmployee and (loggedEmployee.getRole() == 'DEVELOPER' or loggedEmployee.getRole() == 'TESTER')}">
+                <div class="task-buttons-container tb-part tb-part1">
+                    <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'DEVELOPER' and task.getStatus() == 'DEVELOPING'}">
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/submit?taskId=${task.getId()}';">Submit Task</button>
+                    </c:if>
+                    <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'TESTER' and task.getStatus() == 'TESTING'}">
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirmTest?taskId=${task.getId()}';">Test Passed</button>
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/rejectTest?taskId=${task.getId()}';">Test Failed</button>
+                    </c:if>
+                </div>
+            </c:if>
+            <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'PROJECT_MANAGER'}">
+                <c:if test="${task.getStatus() == 'AWAITING_CONFIRMATION'}">
+                    <div class="task-buttons-container tb-part tb-part3">
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/confirm?taskId=${task.getId()}';">Confirm Task</button>
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/reject?taskId=${task.getId()}';">Reject Task</button>
+                    </div>
+                </c:if>
+                <div class="task-buttons-container tb-part tb-part2">
+                    <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/tasks/delete?taskId=${task.getId()}')">Delete Task</button>
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/update?taskId=${task.getId()}';">Edit Task</button>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

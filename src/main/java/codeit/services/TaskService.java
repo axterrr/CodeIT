@@ -54,6 +54,12 @@ public class TaskService {
         }
     }
 
+    public List<Task> getAllTasksByManager(String managerId) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            return dao.getAllByManager(managerId);
+        }
+    }
+
     public List<Task> getAllTasksByDeveloper(String developerId) {
         try (TaskDao dao = daoFactory.createTaskDao()) {
             return dao.getAllByDeveloper(developerId);

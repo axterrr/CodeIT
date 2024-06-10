@@ -40,15 +40,16 @@
                         </label>
                     </div>
                 </div>
-                <div class="filter-container">
-                    <label for="filter-client-group" class="filter-label">Client</label>
-                    <select class="filter-select filter-multiple-select" id="filter-client-group">
-                        <option></option>
-                        <c:forEach items="${clients}" var="client">
-                            <option value="${client.getId()}">${client.getName()}</option>
-                        </c:forEach>
-                    </select>
-                    <div id="clientsFilterContainer">
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <div class="filter-container">
+                        <label for="filter-client-group" class="filter-label">Client</label>
+                        <select class="filter-select filter-multiple-select" id="filter-client-group">
+                            <option></option>
+                            <c:forEach items="${clients}" var="client">
+                                <option value="${client.getId()}">${client.getName()}</option>
+                            </c:forEach>
+                        </select>
+                        <div id="clientsFilterContainer">
                         <c:forEach items="${selectedClients}" var="client">
                             <div class="client-module" id="${client.getId()}">
                                 <p class="module-label">${client.getName()}</p>
@@ -56,8 +57,9 @@
                                 <button class="button module-button" type="button">&times;</button>
                             </div>
                         </c:forEach>
+                        </div>
                     </div>
-                </div>
+                </c:if>
                 <div class="filter-container">
                     <label for="filter-creation-date-group" class="filter-label">Creation Date</label>
                     <div class="dates-input-container" id="filter-creation-date-group">
@@ -122,8 +124,12 @@
                 </form>
             </div>
             <div class="buttons-container">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/add';">Add new Order</button>
-                <button class="button" onclick="printTable()">Create Report</button>
+                <c:if test="${not empty loggedClient}">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/orders/add';">Add new Order</button>
+                </c:if>
+                <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                    <button class="button" onclick="printTable()">Create Report</button>
+                </c:if>
             </div>
         </div>
     </div>
@@ -145,7 +151,26 @@
         <c:forEach items="${orders}" var="order">
             <div class="card order-card" onclick="location.href='${pageContext.request.contextPath}/controller/orders/order?orderId=${order.getId()}';">
                 <div class="card-status-icon">
-                    <img src="img/status.png" alt=""/>
+                    <c:choose>
+                        <c:when test="${order.getStatus() == 'PENDING'}">
+                            <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${order.getStatus() == 'ACCEPTED'}">
+                            <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${order.getStatus() == 'DEVELOPING'}">
+                            <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${order.getStatus() == 'DONE'}">
+                            <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${order.getStatus() == 'REJECTED'}">
+                            <img src="<c:url value="/resources/image/status/rejected.png" />" alt=""/>
+                        </c:when>
+                        <c:when test="${order.getStatus() == 'CANCELLED'}">
+                            <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                        </c:when>
+                    </c:choose>
                 </div>
                 <div class="card-name-container">
                     <span class="card-name">Order Name :
@@ -176,7 +201,9 @@
                     </span>
                 </div>
                 <div class="card-buttons-container">
-                    <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}')">Delete Order</button>
+                    <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                        <button class="button card-button" onclick="event.stopImmediatePropagation(); confirmDeletion('${pageContext.request.contextPath}/controller/orders/delete?orderId=${order.getId()}')">Delete Order</button>
+                    </c:if>
                 </div>
             </div>
         </c:forEach>

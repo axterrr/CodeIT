@@ -17,7 +17,23 @@
     <div class="container full-container full-project-container">
         <div class="info-container project-info-container">
             <div class="project-status-icon">
-                <img src="img/status.png" alt=""/>
+                <c:choose>
+                    <c:when test="${project.getStatus() == 'AWAITING_CONFIRMATION'}">
+                        <img src="<c:url value="/resources/image/status/awaiting.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${project.getStatus() == 'CREATED'}">
+                        <img src="<c:url value="/resources/image/status/created.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${project.getStatus() == 'DEVELOPING'}">
+                        <img src="<c:url value="/resources/image/status/developing.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${project.getStatus() == 'FINISHED'}">
+                        <img src="<c:url value="/resources/image/status/done.png" />" alt=""/>
+                    </c:when>
+                    <c:when test="${project.getStatus() == 'CANCELLED'}">
+                        <img src="<c:url value="/resources/image/status/cancelled.png" />" alt=""/>
+                    </c:when>
+                </c:choose>
             </div>
             <div class="project-name-container">
                 <label class="full-project-label project-name project-name-value">${project.getName()}</label>
@@ -28,9 +44,16 @@
             </div>
             <div class="project-order-container">
                 <label class="full-project-label project-order full-project-info-label">Order:</label>
-                <a href="${pageContext.request.contextPath}/controller/orders/order?orderId=${project.getOrder().getId()}">
-                    <label class="a-label full-project-label project-order project-order-value">${project.getOrder().getName()}</label>
-                </a>
+                <c:choose>
+                    <c:when test="${loggedEmployee.getRole() == 'CEO'}">
+                        <a href="${pageContext.request.contextPath}/controller/orders/order?orderId=${project.getOrder().getId()}">
+                            <label class="a-label full-project-label project-order project-order-value">${project.getOrder().getName()}</label>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <label class="full-project-label project-order project-order-value">${project.getOrder().getName()}</label>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="project-manager-container">
                 <label class="full-project-label project-manager full-project-info-label">Manager:</label>
@@ -50,10 +73,12 @@
                     <label class="a-label full-project-label project-link project-link-value">${project.getGitHubLink()}</label>
                 </a>
             </div>
-            <div class="project-budget-container">
-                <label class="full-project-label project-budget full-project-info-label">Budget:</label>
-                <label class="full-project-label project-budget project-budget-value">${project.getBudget()}</label>
-            </div>
+            <c:if test="${loggedEmployee.getRole() == 'CEO' or loggedEmployee.getRole() == 'PROJECT_MANAGER'}">
+                <div class="project-budget-container">
+                    <label class="full-project-label project-budget full-project-info-label">Budget:</label>
+                    <label class="full-project-label project-budget project-budget-value">${project.getBudget()}</label>
+                </div>
+            </c:if>
             <div class="project-dates-container">
                 <div class="project-date-container project-start-date-container">
                     <label class="full-project-label project-start-date full-project-info-label">Start date:</label>
@@ -76,7 +101,9 @@
         <div class="project-tasks-container">
             <div class="project-tasks-header">
                 <label class="full-project-label project-tasks">Tasks:</label>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/add?projectId=${project.getId()}';">Add New Task</button>
+                <c:if test="${loggedEmployee.getRole() == 'PROJECT_MANAGER' and (project.getStatus() == 'CREATED' or project.getStatus() == 'DEVELOPING')}">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/tasks/add?projectId=${project.getId()}';">Add New Task</button>
+                </c:if>
             </div>
             <div class="project-tasks-list">
                 <c:forEach items="${tasks}" var="task">
@@ -90,17 +117,23 @@
             </div>
         </div>
         <div class="project-buttons-container">
-            <div class="project-buttons-container pb-part pb-part1">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/submit?projectId=${project.getId()}';">Submit Project</button>
-            </div>
-            <div class="project-buttons-container pb-part pb-part3">
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/confirm?projectId=${project.getId()}';">Confirm Project</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/reject?projectId=${project.getId()}';">Reject Project</button>
-            </div>
-            <div class="project-buttons-container pb-part pb-part2">
-                <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
-                <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
-            </div>
+            <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'PROJECT_MANAGER' and project.getStatus() == 'DEVELOPING'}">
+                <div class="project-buttons-container pb-part pb-part1">
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/submit?projectId=${project.getId()}';">Submit Project</button>
+                </div>
+            </c:if>
+            <c:if test="${not empty loggedEmployee and loggedEmployee.getRole() == 'CEO'}">
+                <c:if test="${project.getStatus() == 'AWAITING_CONFIRMATION'}">
+                    <div class="project-buttons-container pb-part pb-part3">
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/confirm?projectId=${project.getId()}';">Confirm Project</button>
+                        <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/reject?projectId=${project.getId()}';">Reject Project</button>
+                    </div>
+                </c:if>
+                <div class="project-buttons-container pb-part pb-part2">
+                    <button class="button" onclick="confirmDeletion('${pageContext.request.contextPath}/controller/projects/delete?projectId=${project.getId()}')">Delete Project</button>
+                    <button class="button" onclick="location.href='${pageContext.request.contextPath}/controller/projects/update?projectId=${project.getId()}';">Edit Project</button>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

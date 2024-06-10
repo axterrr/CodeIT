@@ -2,24 +2,44 @@ package codeit.controller.commands.employee;
 
 import codeit.constants.Attribute;
 import codeit.constants.Page;
+import codeit.constants.ServletPath;
 import codeit.controller.commands.Command;
+import codeit.controller.utils.RedirectionManager;
+import codeit.controller.utils.SessionManager;
 import codeit.models.entities.Employee;
 import codeit.models.enums.Role;
+import codeit.services.ClientService;
 import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 import codeit.services.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class AllEmployeesCommand implements Command {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<Employee> employees = EmployeeService.getInstance().getAllEmployees();
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        List<Employee> employees = new ArrayList<>();
+
+        Employee loggedInEmployee = SessionManager.getInstance().getEmployeeFromSession(request.getSession());
+        if (loggedInEmployee.getRole() == Role.CEO) {
+            employees = EmployeeService.getInstance().getAllEmployees();
+        }
+        if (loggedInEmployee.getRole() == Role.PROJECT_MANAGER) {
+            employees.addAll(EmployeeService.getInstance().getAllDevelopers());
+            employees.addAll(EmployeeService.getInstance().getAllTesters());
+            employees.add(EmployeeService.getInstance().getEmployeeById(loggedInEmployee.getId()));
+        }
+        if (loggedInEmployee.getRole() == Role.TESTER || loggedInEmployee.getRole() == Role.DEVELOPER) {
+            Map<String, String> urlParams = new HashMap<>();
+            urlParams.put(Attribute.EMPLOYEE_ID, loggedInEmployee.getId());
+            RedirectionManager.getInstance().redirectWithParams(request, response, ServletPath.EMPLOYEE, urlParams);
+            return RedirectionManager.REDIRECTION;
+        }
 
         employees = searchByName(employees, request);
         employees = filterByRoles(employees, request);

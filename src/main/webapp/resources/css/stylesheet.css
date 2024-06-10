@@ -409,10 +409,10 @@ select {
 
 .card-status-icon {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    height: 25px;
-    width: 25px;
+    top: 10px;
+    right: 10px;
+    height: 35px;
+    width: 35px;
 }
 
 .card-status-icon img {
@@ -433,7 +433,7 @@ select {
     gap: 20px;
 }
 
-.card-task-project {
+.card-task-project, .card-client {
     font-size: 18px;
 }
 
@@ -729,9 +729,13 @@ h1 {
 .project-status-icon, .order-status-icon, .task-status-icon {
     position: absolute;
     right: 20px;
-    height: 25px;
-    width: 25px;
-    background-color: #2F0D2C;
+    height: 50px;
+    width: 50px;
+}
+
+.project-status-icon img, .order-status-icon img, .task-status-icon img {
+    height: 100%;
+    width: 100%
 }
 
 .project-task-container, .client-order-container, .employee-task-container {
@@ -942,7 +946,7 @@ h1 {
     margin-bottom: 5px;
 }
 
-.employee-hire-date-container, .employee-birth-date-container {
+.employee-hire-date-container, .employee-birth-date-container, .employee-salary-container {
     font-size: 19px;
 }
 

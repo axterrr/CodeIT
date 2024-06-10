@@ -3,6 +3,8 @@ package codeit.controller.commands.task;
 import codeit.constants.Attribute;
 import codeit.constants.Page;
 import codeit.controller.commands.Command;
+import codeit.controller.utils.SessionManager;
+import codeit.models.entities.Employee;
 import codeit.services.EmployeeService;
 import codeit.services.ProjectService;
 
@@ -16,7 +18,13 @@ public class GetAddTaskCommand implements Command {
         String projectId = request.getParameter(Attribute.PROJECT_ID);
         if (projectId != null)
             request.setAttribute(Attribute.PROJECT_ID, projectId);
-        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllCreatedDevelopingProjects());
+
+        Employee loggedInEmployee = SessionManager.getInstance().getEmployeeFromSession(request.getSession());
+
+        request.setAttribute(Attribute.PROJECTS, ProjectService.getInstance().getAllCreatedDevelopingProjects()
+                .stream().filter(project -> project.getManager()!=null && project.getManager().getId().equals(loggedInEmployee.getId()))
+                .toList());
+
         request.setAttribute(Attribute.DEVELOPERS, EmployeeService.getInstance().getAllDevelopers());
         request.setAttribute(Attribute.TESTERS, EmployeeService.getInstance().getAllTesters());
         return Page.ADD_UPDATE_TASK_VIEW;
