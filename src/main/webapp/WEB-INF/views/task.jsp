@@ -82,12 +82,14 @@
                 <label class="full-project-label project-tasks" for="comment">Comment:</label>
                 <button id="editCommentButton" class="button">Edit Comment</button>
             </div>
-            <div class="task-comment-value-container">
-                <textarea readonly class="full-task-label task-comment task-comment-value" id="comment">${task.getComment()}</textarea>
-            </div>
-            <div class="comment-buttons-container">
-                <button id="saveCommentButton" class="button" style="display:none;">Save Comment</button>
-            </div>
+            <form action="${pageContext.request.contextPath}/controller/tasks/comment?taskId=${task.getId()}" method="POST" role="form">
+                <div class="task-comment-value-container">
+                    <textarea readonly class="full-task-label task-comment task-comment-value" id="comment" name="comment" placeholder="Comment">${task.getComment()}</textarea>
+                </div>
+                <div class="comment-buttons-container">
+                    <button type="submit" id="saveCommentButton" class="button" style="display:none;">Save Comment</button>
+                </div>
+            </form>
         </div>
         <div class="task-buttons-container">
             <div class="task-buttons-container tb-part tb-part1">

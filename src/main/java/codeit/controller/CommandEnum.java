@@ -66,7 +66,8 @@ public enum CommandEnum {
     CONFIRM_TASK ("GET:/tasks/confirm", new ConfirmTaskCommand()),
     CONFIRM_TASK_TEST("GET:/tasks/confirmTest", new ConfirmTaskTestCommand()),
     REJECTS_TASK ("GET:/tasks/reject", new RejectTaskCommand()),
-    REJECTS_TASK_TEST ("GET:/tasks/rejectTest", new RejectTaskTestCommand());
+    REJECTS_TASK_TEST ("GET:/tasks/rejectTest", new RejectTaskTestCommand()),
+    TASK_POST_COMMENT ("POST:/tasks/comment", new PostTaskCommentCommand());
 
     private String key;
     private Command command;

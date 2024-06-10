@@ -34,6 +34,7 @@ public class TaskDao implements AutoCloseable {
             "                     FROM `project` " +
             "                     WHERE order_id=?)";
     private static String FINISH = "UPDATE `task` SET status=?, end_date=? WHERE task_id=?";
+    private static String UPDATE_COMMENT = "UPDATE `task` SET comment=? WHERE task_id=?";
 
     private static String ID = "task_id";
     private static String PROJECT_ID = "project_id";
@@ -46,7 +47,7 @@ public class TaskDao implements AutoCloseable {
     private static String DUE_DATE = "due_date";
     private static String END_DATE = "end_date";
     private static String STATUS = "status";
-    private static String COMMENT = "status";
+    private static String COMMENT = "comment";
 
     private Connection connection;
 
@@ -191,6 +192,16 @@ public class TaskDao implements AutoCloseable {
             query.setString(1, TaskStatus.FINISHED.getValue());
             query.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             query.setString(3, id);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        }
+    }
+
+    public void updateComment(String id, String comment) {
+        try (PreparedStatement query = connection.prepareStatement(UPDATE_COMMENT)) {
+            query.setString(1, comment);
+            query.setString(2, id);
             query.executeUpdate();
         } catch (SQLException e) {
             throw new ServerException(e);

@@ -101,4 +101,10 @@ public class TaskService {
             dao.cancelByOrder(orderId);
         }
     }
+
+    public void updateTaskComment(String taskId, String comment) {
+        try (TaskDao dao = daoFactory.createTaskDao()) {
+            dao.updateComment(taskId, comment);
+        }
+    }
 }
